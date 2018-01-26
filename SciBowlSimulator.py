@@ -26,6 +26,7 @@ class Player:
         self.immune = 10
         self.inventory = []
         self.equipment = []
+        self.xp = 0
     
     def pickup(self,item):
         self.inventory.append(item)
@@ -35,6 +36,14 @@ class Player:
     
     def attacked(self,other_attack,other_power):
         self.hp -= other_power*other_attack/self.immune
+    
+    def getXP(self,xp):
+        self.xp += xp
+        if xp >= 5*self.level**2:
+            xp -= 5*self.level**2
+            self.level += 1
+            return 1
+        return 0
 
 player = Player()
 
