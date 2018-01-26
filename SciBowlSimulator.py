@@ -1,3 +1,6 @@
+from Bestiary import *
+import random
+
 class Item:
     def __init__(self,name,t):
         self.name = ''
@@ -34,8 +37,10 @@ class Player:
     def use(self,index):
         pass
     
-    def attacked(self,other_attack,other_power):
-        self.hp -= other_power*other_attack/self.immune
+    def attacked(self,other_attack):
+        damage = other_attack/self.immune
+        self.hp -= damage
+        return damage
     
     def getXP(self,xp):
         self.xp += xp
@@ -60,3 +65,15 @@ print '\nI don\'t care, your name is Linnaeus.'
 
 player.name = 'Linnaeus'
 
+rick_perry = RickPerry()
+
+print 'Now fight Rick Perry.'
+while player.hp > 0:
+    raw_input('Action: ')
+    print rick_perry.name,'took',rick_perry.attacked(player.knowledge,10),'damage'
+    if random.randint(0,1) == 1:
+        print rick_perry.name,'dealt',player.attacked(rick_perry.knowledge),'damage'
+    else:
+        print rick_perry.name,'missed'
+
+print 'You lose!'

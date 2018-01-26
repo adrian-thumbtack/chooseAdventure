@@ -7,7 +7,9 @@ class Enemy:
         self.xp = x
         
     def attacked(self,other_attack,other_power):
-        self.hp -= other_power*other_attack/self.immune
+        damage = other_power*other_attack/self.immune
+        self.hp -= damage
+        return damage
 
 class RickPerry(Enemy):
     name = 'Rick Perry'
