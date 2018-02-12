@@ -2,10 +2,10 @@ import tkinter as tk
 from random import randint
 
 root = tk.Tk()
-canvas = tk.Canvas(root, height=500, width=500, bg="black")
+canvas = tk.Canvas(root, height=500, width=500, bg="white")
 canvas.grid()
 pos = [randint(0,24), randint(0,24)]
-player = canvas.create_oval(20*pos[0], 20*pos[1], 20*(pos[0]+1), 20*(pos[1]+1), fill="lime")
+player = canvas.create_oval(20*pos[0], 20*pos[1], 20*(pos[0]+1), 20*(pos[1]+1), fill="green")
 board = []
 lock = True
 doors = []
@@ -32,7 +32,7 @@ key = canvas.create_rectangle(20*q[0], 20*q[1], 20*(q[0]+1), 20*(q[1]+1), fill="
 def drawPlayer():
     global player
     canvas.delete(player)
-    player = canvas.create_oval(20*pos[0], 20*pos[1], 20*(pos[0]+1), 20*(pos[1]+1), fill="lime")
+    player = canvas.create_oval(20*pos[0], 20*pos[1], 20*(pos[0]+1), 20*(pos[1]+1), fill="green")
     
 def resetBoard():
     global key
@@ -109,7 +109,7 @@ tk.Button(frame, text="Down", command=down).grid(row=0, column=3)
 frame.grid()
 
 for i in range(1, 25):
-    canvas.create_line(0, 20*i, 500, 20*i, fill="white")
-    canvas.create_line(20*i, 0, 20*i, 500, fill="white")
+    canvas.create_line(0, 20*i, 500, 20*i, fill="black")
+    canvas.create_line(20*i, 0, 20*i, 500, fill="black")
 
 root.mainloop()
