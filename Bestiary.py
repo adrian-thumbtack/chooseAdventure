@@ -1,10 +1,10 @@
 class Enemy:
     name = 'Enemy'
-    def __init__(self,h,k,i,x,l):
-        self.hp = h
-        self.knowledge = k
-        self.immune = i
-        self.xp = x
+    def __init__(self,l):
+        self.hp = 10*l
+        self.knowledge = l**2
+        self.immune = l**2
+        self.xp = 10*l
         self.level = l
         
     def attacked(self,other_attack,other_power):
