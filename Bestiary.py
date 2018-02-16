@@ -54,7 +54,7 @@ class RickPerry(Enemy):
     name = 'Rick Perry'
     attack = 'frack'
     def __init__(self):
-        Enemy.__init__(self,1000,100,100,1)
+        Enemy.__init__(self,10)
 
 class Player:
     def __init__(self):
@@ -65,25 +65,29 @@ class Player:
         self.adrenaline = 0
         self.knowledge = 10
         self.immune = 10
-        self.inventory = []
-        self.equipment = []
+        self.atp = 0
+        self.platelets = 0
+        self.starch = 0
         self.xp = 0
     
-    def pickup(self,item):
-        self.inventory.append(item)
+    def addATP(self):
+        self.atp += 1
     
-    def use(self,index):
-        pass
+    def addPlatelets(self):
+        self.platelets += 1
+    
+    def addStarch(self):
+        self.starch += 1
     
     def attacked(self,other_attack):
         damage = other_attack/self.immune
         self.hp -= damage
         return damage
     
-    def getXP(self,xp):
+    def giveXP(self,xp):
         self.xp += xp
-        if xp >= 5*self.level**2:
-            xp -= 5*self.level**2
+        if xp >= 10*self.level**2:
+            xp -= 10*self.level**2
             self.level += 1
             return 1
         return 0
