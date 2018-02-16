@@ -44,7 +44,7 @@ def drawEnemy(x,y,num):
     if num == len(en):
         en.append(canvas.create_oval(20*x, 20*y, 20*(x+1), 20*(y+1), fill="red"))
     elif num > len(en):
-        print "Lol wtf"
+        pass
     else:
         canvas.delete(en[num])
         en[num] = canvas.create_oval(20*x, 20*y, 20*(x+1), 20*(y+1), fill="red")
@@ -52,6 +52,7 @@ def drawEnemy(x,y,num):
 drawPlayer()
 
 def enemies():
+    global enPos
     for i in range(0,5):
         if len(enPos) < 5:
             enPos.append([])
@@ -87,6 +88,8 @@ def newRoom():
             board[jeff[0][i]][jeff[1][i]] = 1
         else:
             board[jeff[0][i]][jeff[1][i]] = 0
+    for i in range(0,5):
+        board[enPos[i][0]][enPos[i][1]] = 0
     enemies()
     
 def attackPlayer():
@@ -100,20 +103,23 @@ def stuffHappens(jeff):
     global enPos
     oldPos = [pos[0]-jeff[0], pos[1]-jeff[1]]
     
-    if board[pos[0]][pos[1]] == 1:
-        if pos[0] == 0:
+    if pos[0] <= 0:
+        if pos[1] == oldPos[1]:
             c[1] -= 1
             newRoom()
             pos[0] = 24
-        elif pos[0] == 24:
+    elif pos[0] >= 24:
+        if pos[1] == oldPos[1]:
             c[1] += 1
             newRoom()
             pos[0] = 0
-        elif pos[1] == 0:
+    elif pos[1] <= 0:
+        if pos[0] == oldPos[0]:
             c[0] -= 1
             newRoom()
             pos[1] = 24
-        elif pos[1] == 24:
+    elif pos[1] >= 24:
+        if pos[0] == oldPos[0]:
             c[0] += 1
             newRoom()
             pos[1] = 0
@@ -137,7 +143,7 @@ def stuffHappens(jeff):
         else:
             newY = enPos[i][1] - int(dy/math.fabs(dy))
             
-        if board[newX][newY] == 2:
+        if board[newX][newY] == 2 or newX <= 0 or newX >= 24 or newY >= 24 or newY <= 0:
             newX = enPos[i][0]
             newY = enPos[i][1]
         elif newX == pos[0] and newY == pos[1]:
