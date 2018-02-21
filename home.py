@@ -17,6 +17,7 @@ rooms = [[[-1], [False,False,True,False], [-1]],[[False,False,True,True], [True,
 light = False
 c = [3,1,-20]
 cover = 0
+pl = Player()
 
 for i in range(1, 24):
     canvas.create_line(0, 20*i, 500, 20*i, fill="black")
@@ -109,8 +110,11 @@ def newRoom():
     if c[0] == 1 and c[1] == 1 and not light:
         cover = canvas.create_rectangle(0,0,500,500, fill="black")
     
-def attackPlayer():
-    pass
+def attackPlayer(num):
+    addText("Took "+str(pl.attacked(enPos[num].knowledge))+" damage from "+enPos[num].name)
+    if pl.hp <= 0:
+        addText("You died!")
+        pl.hp = 0
     
 def attackEnemy(num):
     addText("Dealt "+str(enPos[num].attacked(10,10))+" damage to "+enPos[num].name)
@@ -169,14 +173,14 @@ def stuffHappens(jeff):
             newX = enPos[i][0]
             newY = enPos[i][1]
         elif newX == pos[0] and newY == pos[1]:
-            attackPlayer()
+            attackPlayer(i)
             newX = enPos[i][0]
             newY = enPos[i][1]
         board[enPos[i][0]][enPos[i][1]] = 0   
         board[newX][newY] = i+2   
         enPos[i].updatePos(newX, newY)
         drawEnemy(enPos[i][0], enPos[i][1], i)
-        
+    updateStats()
     
 def addText(txt):
     if c[2] == 480:
@@ -185,6 +189,10 @@ def addText(txt):
     else:
         c[2] += 20
     text.create_text(2,c[2],text=txt,anchor='nw',font=('Courier'))
+
+def updateStats():
+    statBar.delete("all")
+    statBar.create_text(0,0,text="HP: "+str(pl.hp),anchor='nw',font=('Courier'))
 
 def left():
     if (pos[0] <= 1 and board[0][pos[1]] == 0) or (pos[1] == 0 or pos[1] == 24):
@@ -224,5 +232,6 @@ tk.Button(frame, text="Health Potion").grid(row=1, column=5)
 tk.Button(frame, text="Eat Sugar").grid(row=2, column=5)
 
 frame.grid(row=1,column=0, columnspan=1)
+updateStats()
 
 root.mainloop()

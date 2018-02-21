@@ -3,7 +3,7 @@ class Enemy:
     attack = 'scientificate'
     def __init__(self,l):
         self.hp = 10*l
-        self.knowledge = l**2
+        self.knowledge = 10*l**2
         self.immune = l**2
         self.xp = 10*l
         self.level = l
