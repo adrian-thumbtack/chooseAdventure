@@ -8,11 +8,21 @@ class Enemy:
         self.xp = 10*l
         self.level = l
         self.power = 10
+        self.x
+        self.y
         
     def attacked(self,other_attack,other_power):
         damage = other_power*other_attack/self.immune
         self.hp -= damage
         return damage
+    
+    def updatePos(self,x,y):
+        self.x = x
+        self.y = y
+    
+    def __getitem__(self,i):
+        if i == 0: return self.x
+        elif i == 1: return self.y
 
 class Physicist(Enemy):
     name = 'Physicist'
@@ -65,19 +75,17 @@ class Player:
         self.adrenaline = 0
         self.knowledge = 10
         self.immune = 10
-        self.atp = 0
-        self.platelets = 0
-        self.starch = 0
+        self.inv = [0,0,0]
         self.xp = 0
     
     def addATP(self):
-        self.atp += 1
+        self.inv[0] += 1
     
     def addPlatelets(self):
-        self.platelets += 1
+        self.inv[1] += 1
     
     def addStarch(self):
-        self.starch += 1
+        self.inv[2] += 1
     
     def attacked(self,other_attack):
         damage = other_attack/self.immune
