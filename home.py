@@ -18,6 +18,9 @@ light = False
 c = [3,1,-20]
 cover = 0
 pl = Player()
+lock = True
+light = True
+lock = False
 
 for i in range(1, 24):
     canvas.create_line(0, 20*i, 500, 20*i, fill="black")
@@ -53,7 +56,10 @@ def drawEnemy(x,y,num):
     f = "red"
     if c[0] == 1 and c[1] == 1 and not light:
         f = "black"
-    if num == len(en):
+    if num == 65:
+        canvas.delete(en[0])
+        en[0] = canvas.create_oval(20*x, 20*y, 20*(x+3), 20*(y+3), fill="red")
+    elif num == len(en):
         en.append(canvas.create_oval(20*x, 20*y, 20*(x+1), 20*(y+1), fill=f))
     elif num > len(en):
         pass
@@ -65,14 +71,27 @@ drawPlayer()
 
 def enemies():
     global enPos
-    for i in range(0,5):
-        if len(enPos) < 5:
-            enPos.append(Enemy(1))
-        enPos[i].updatePos(randint(1,23), randint(1,23))
-        while enPos[i][0] == pos[0] and enPos[i][1] == pos[1]:
-            enPos[i] = [randint(1,23), randint(1,23)]
-        drawEnemy(enPos[i][0], enPos[i][1], i)
-        board[enPos[i][0]][enPos[i][1]] = (i+2)
+    p = len(enPos)
+    for i in range(0, p):
+        del enPos[0]
+        del en[0]
+    if c[0] != 0:
+        for i in range(0,5):
+            if len(enPos) < 5:
+                enPos.append(Enemy(1))
+            enPos[i].updatePos(randint(1,23), randint(1,23))
+            while enPos[i][0] == pos[0] and enPos[i][1] == pos[1]:
+                enPos[i] = [randint(1,23), randint(1,23)]
+            drawEnemy(enPos[i][0], enPos[i][1], i)
+            board[enPos[i][0]][enPos[i][1]] = (i+2)
+    else:
+        en.append(canvas.create_oval(220,60,280,120,fill="red"))
+        enPos.append(RickPerry())
+        enPos[0].updatePos(11,3)
+        for i in range(0,3):
+            for j in range(0,3):
+                board[enPos[0][0]+i][enPos[0][1]+j] = 2
+        drawEnemy(enPos[0][0],enPos[0][1],65)
         
 enemies()
 
@@ -99,7 +118,10 @@ def newRoom():
             temp = [480,480,480,480]
         if rooms[c[0]][c[1]][i]:
             temp[z] = 240
-            doors.append(canvas.create_rectangle(temp[0], temp[1], temp[0]+20, temp[1]+20, fill="blue"))
+            if c[0] == 1 and c[1] == 1 and lock and i == 0:
+                doors.append(canvas.create_rectangle(temp[0], temp[1], temp[0]+20, temp[1]+20, fill="brown")) 
+            else:
+                doors.append(canvas.create_rectangle(temp[0], temp[1], temp[0]+20, temp[1]+20, fill="blue"))
             temp[z] = q
             board[jeff[0][i]][jeff[1][i]] = 1
         else:
@@ -130,7 +152,10 @@ def stuffHappens(jeff):
     global enPos
     oldPos = [pos[0]-jeff[0], pos[1]-jeff[1]]
     
-    if pos[0] <= 0:
+    if c[0] == 1 and c[1] == 1 and pos[0] == 12 and pos[1] == 0 and lock:
+        addText("That door is locked, dingus")
+        pos = oldPos 
+    elif pos[0] <= 0:
         if pos[1] == oldPos[1]:
             c[1] -= 1
             newRoom()
