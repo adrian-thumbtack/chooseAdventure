@@ -13,7 +13,9 @@ pos = [randint(1,23), randint(1,23)]
 player = canvas.create_oval(20*pos[0], 20*pos[1], 20*(pos[0]+1), 20*(pos[1]+1), fill="green")
 board = []
 rooms = [[[-1], [False,False,True,False], [-1]],[[False,False,True,True], [True,True,True,True], [False,True,True,False]],[[True,False,False,True], [True,True,True,True], [True,True,False,False]],[[-1],[True,False,False,False],[-1]]]
+light = False
 c = [3,1,-20]
+cover = 0
 
 for i in range(1, 24):
     canvas.create_line(0, 20*i, 500, 20*i, fill="black")
@@ -36,18 +38,26 @@ enPos = []
      
 def drawPlayer():
     global player
+    global c
+    f = "green"
+    if c[0] == 1 and c[1] == 1 and not light:
+        f = "black"
     canvas.delete(player)
-    player = canvas.create_oval(20*pos[0], 20*pos[1], 20*(pos[0]+1), 20*(pos[1]+1), fill="green")
+    player = canvas.create_oval(20*pos[0], 20*pos[1], 20*(pos[0]+1), 20*(pos[1]+1), fill=f)
     
 def drawEnemy(x,y,num):
     global en
+    global c
+    f = "red"
+    if c[0] == 1 and c[1] == 1 and not light:
+        f = "black"
     if num == len(en):
-        en.append(canvas.create_oval(20*x, 20*y, 20*(x+1), 20*(y+1), fill="red"))
+        en.append(canvas.create_oval(20*x, 20*y, 20*(x+1), 20*(y+1), fill=f))
     elif num > len(en):
         pass
     else:
         canvas.delete(en[num])
-        en[num] = canvas.create_oval(20*x, 20*y, 20*(x+1), 20*(y+1), fill="red")
+        en[num] = canvas.create_oval(20*x, 20*y, 20*(x+1), 20*(y+1), fill=f)
 
 drawPlayer()
 
@@ -68,6 +78,10 @@ def newRoom():
     global doors
     global rooms
     global en
+    global cover
+    if cover != 0:
+        canvas.delete(cover)
+        cover = 0
     q = 0
     temp = [0,0]
     for door in doors:
@@ -91,6 +105,8 @@ def newRoom():
     for i in range(0,5):
         board[enPos[i][0]][enPos[i][1]] = 0
     enemies()
+    if c[0] == 1 and c[1] == 1 and not light:
+        cover = canvas.create_rectangle(0,0,500,500, fill="black")
     
 def attackPlayer():
     pass
@@ -130,8 +146,8 @@ def stuffHappens(jeff):
     drawPlayer()
     
     for i in range(0,len(enPos)):
-        dx = enPos[i][0] - oldPos[0]
-        dy = enPos[i][1] - oldPos[1]
+        dx = enPos[i][0] - pos[0]
+        dy = enPos[i][1] - pos[1]
         newX = enPos[i][0]
         newY = enPos[i][1]
         if math.fabs(dx) > math.fabs(dy):
