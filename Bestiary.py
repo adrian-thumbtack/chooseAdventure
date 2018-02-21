@@ -8,8 +8,8 @@ class Enemy:
         self.xp = 10*l
         self.level = l
         self.power = 10
-        self.x
-        self.y
+        self.xPos = 0
+        self.yPos = 0
         
     def attacked(self,other_attack,other_power):
         damage = other_power*other_attack/self.immune
@@ -17,12 +17,12 @@ class Enemy:
         return damage
     
     def updatePos(self,x,y):
-        self.x = x
-        self.y = y
+        self.xPos = x
+        self.yPos = y
     
     def __getitem__(self,i):
-        if i == 0: return self.x
-        elif i == 1: return self.y
+        if i == 0: return self.xPos
+        elif i == 1: return self.yPos
 
 class Physicist(Enemy):
     name = 'Physicist'

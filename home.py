@@ -1,5 +1,6 @@
 import tkinter as tk
 from random import randint
+from Bestiary import *
 import math
 
 root = tk.Tk()
@@ -65,12 +66,12 @@ def enemies():
     global enPos
     for i in range(0,5):
         if len(enPos) < 5:
-            enPos.append([])
-        enPos[i] = [randint(1,23), randint(1,23)]
+            enPos.append(Enemy(1))
+        enPos[i].updatePos(randint(1,23), randint(1,23))
         while enPos[i][0] == pos[0] and enPos[i][1] == pos[1]:
             enPos[i] = [randint(1,23), randint(1,23)]
         drawEnemy(enPos[i][0], enPos[i][1], i)
-        board[enPos[i][0]][enPos[i][1]] = i+2
+        board[enPos[i][0]][enPos[i][1]] = (i+2)
         
 enemies()
 
@@ -102,7 +103,7 @@ def newRoom():
             board[jeff[0][i]][jeff[1][i]] = 1
         else:
             board[jeff[0][i]][jeff[1][i]] = 0
-    for i in range(0,5):
+    for i in range(0,len(en)):
         board[enPos[i][0]][enPos[i][1]] = 0
     enemies()
     if c[0] == 1 and c[1] == 1 and not light:
@@ -112,7 +113,13 @@ def attackPlayer():
     pass
     
 def attackEnemy(num):
-    pass
+    addText("Dealt "+str(enPos[num].attacked(10,10))+" damage to "+enPos[num].name)
+    if enPos[num].hp <= 0:
+        addText(enPos[num].name+" died!")
+        canvas.delete(en[num])
+        board[enPos[num][0]][enPos[num][1]] = 0
+        del enPos[num]
+        del en[num]
         
 def stuffHappens(jeff):
     global pos
@@ -139,10 +146,9 @@ def stuffHappens(jeff):
             c[0] += 1
             newRoom()
             pos[1] = 0
-    elif board[pos[0]][pos[1]] >= 2:
+    elif board[pos[0]][pos[1]] >= 2: #when player attacks an enemy
         attackEnemy(board[pos[0]][pos[1]] - 2) #Replace with a lower stats thing
         pos = oldPos
-        addText("I DID IT MOM GET THE CAMERA!")
     drawPlayer()
     
     for i in range(0,len(enPos)):
@@ -159,7 +165,7 @@ def stuffHappens(jeff):
         else:
             newY = enPos[i][1] - int(dy/math.fabs(dy))
             
-        if board[newX][newY] == 2 or newX <= 0 or newX >= 24 or newY >= 24 or newY <= 0:
+        if board[newX][newY] >= 2 or newX <= 0 or newX >= 24 or newY >= 24 or newY <= 0:
             newX = enPos[i][0]
             newY = enPos[i][1]
         elif newX == pos[0] and newY == pos[1]:
@@ -167,8 +173,8 @@ def stuffHappens(jeff):
             newX = enPos[i][0]
             newY = enPos[i][1]
         board[enPos[i][0]][enPos[i][1]] = 0   
-        board[newX][newY] = 2    
-        enPos[i] = [newX, newY]
+        board[newX][newY] = i+2   
+        enPos[i].updatePos(newX, newY)
         drawEnemy(enPos[i][0], enPos[i][1], i)
         
     
