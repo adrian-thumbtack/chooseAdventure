@@ -105,7 +105,8 @@ def newRoom():
         canvas.delete(cover)
         cover = None
     if box != None:
-        canvas.delete(box)
+        canvas.delete(box[0])
+        board[box[1]][box[2]] = 0
         box = None
     q = 0
     temp = [0,0]
@@ -133,8 +134,7 @@ def newRoom():
     if len(enPos) > 0 and enPos[0].name == "Rick Perry":
         for i in range(0,3):
             for j in range(0,3):
-                board[enPos[0][0]+i][enPos[0][1]+j] = 0
-                
+                board[enPos[0][0]+i][enPos[0][1]+j] = 0           
     else:
         for i in range(0,len(en)):
             board[enPos[i][0]][enPos[i][1]] = 0
@@ -145,7 +145,7 @@ def newRoom():
         q = [randint(1,23), randint(1,23)]
         while q == pos or board[q[0]][q[1]] >= 1:
             q = [randint(1,23), randint(1,23)]
-        box = canvas.create_rectangle(q[0]*20, q[1]*20, (q[0]+1)*20, (q[1]+1)*20, fill="brown")
+        box = [canvas.create_rectangle(q[0]*20, q[1]*20, (q[0]+1)*20, (q[1]+1)*20, fill="brown"),q[0],q[1]]
         board[q[0]][q[1]] = -1
         
 def attackPlayer(num):
@@ -296,12 +296,25 @@ def down():
         pos[1] += 1
     stuffHappens([0,1])
     
+def interact():
+    if board[pos[0]][pos[1]] == -1:
+        if randint(0,1) == 0:
+            pl.inv[2] += 1
+            addText("You gained a key")
+        else:
+            addText("This box has nothing in it, because we're mean")
+        board[pos[0]][pos[1]] = -65
+    elif board[pos[0]][pos[1]] == -65:
+        addText("You've already gotten something, don't expect us to be helpful")
+    else:
+        addText("Nothing to see here...")
+    
 frame = tk.Frame(root)
 tk.Button(frame, text="Left", command=left).grid(row=1, column=0, columnspan=2)
 tk.Button(frame, text="Right", command=right).grid(row=1, column=2, columnspan=2)
 tk.Button(frame, text="Up", command=up).grid(row=0, column=1, columnspan=2)
 tk.Button(frame, text="Down", command=down).grid(row=2, column=1, columnspan=2)
-tk.Button(frame, text="Interact").grid(row=0, column = 5)
+tk.Button(frame, text="Interact", command=interact).grid(row=0, column=5)
 tk.Button(frame, text="Health Potion").grid(row=1, column=5)
 tk.Button(frame, text="Eat Sugar").grid(row=2, column=5)
 
