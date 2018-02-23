@@ -248,7 +248,10 @@ def addText(txt):
 
 def updateStats():
     statBar.delete("all")
-    statBar.create_text(0,0,text="HP: "+str(pl.hp),anchor='nw',font=('Courier'))
+    statBar.create_text(0,0,text="PLAYER STATS \n" + "HP: "+str(pl.hp) + 
+    "\nKnowledge (Attack): "+str(pl.knowledge)+  
+    "\nImmunity (Defense): "+str(pl.immune),
+    anchor='nw',font=('Courier'))
 
 def left():
     if (pos[0] <= 1 and board[0][pos[1]] == 0) or (pos[1] == 0 or pos[1] == 24):
