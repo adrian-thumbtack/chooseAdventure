@@ -197,7 +197,7 @@ def stuffHappens(jeff):
         if newX-1 <= 0 or newX+1 >= 25 or newY-1 <= 0 or newY+1 >= 25:
             newX = cen[0]
             newY = cen[1]
-        elif math.fabs(dx) <= 1 and math.fabs(dy) <= 1:
+        elif math.fabs(newX-pos[0]) <= 1 and math.fabs(newY-pos[1]) <= 1:
             newX = cen[0]
             newY = cen[1]
         
