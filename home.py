@@ -19,6 +19,7 @@ cover = None
 pl = Player()
 box = None
 
+
 for i in range(1, 24):
     canvas.create_line(0, 20*i, 500, 20*i, fill="black")
     canvas.create_line(20*i, 0, 20*i, 500, fill="black")
@@ -263,9 +264,17 @@ def addText(txt):
 
 def updateStats():
     statBar.delete("all")
-    statBar.create_text(0,0,text="PLAYER STATS \n" + "HP: "+str(pl.hp) + 
+    item = ""
+    if pl.inv[2] >= 1:
+        item += "Mysterious Key\n"
+    if pl.inv[3] >= 1:
+        item += "Oil Lamp\n"
+    if pl.inv[0] >= 1:
+        item += "Health Potion (x" + pl.inv[0] + ")"
+    
+    statBar.create_text(0,0,text="Player Stats \n" + "HP: "+str(pl.hp) + "/10" +
     "\nKnowledge (Attack): "+str(pl.knowledge)+  
-    "\nImmunity (Defense): "+str(pl.immune),
+    "\nImmunity (Defense): "+str(pl.immune)+ "\n\nInventory \n" + str(item),
     anchor='nw',font=('Courier'))
 
 def left():
@@ -296,15 +305,36 @@ def down():
         pos[1] += 1
     stuffHappens([0,1])
     
+def hi(key):
+    up()
+    
+def hi2(key):
+    down()
+    
+def hi3(key):
+    left()
+    
+def hi4(key):
+    right()
+    
 def interact():
     if board[pos[0]][pos[1]] == -1:
-        q = randint(0,2)
+        q = randint(0,10)
         if q == 0:
             pl.inv[2] += 1
             addText("You gained a key. Door unlocked!")
+            updateStats()
         elif q == 1:
             pl.inv[3] += 1
             addText("You have gained a lamp. Let there be light")
+            updateStats()
+        elif q >= 2:
+            r = randint(1,4)
+            pl.inv[0] += r
+            if r == 1:
+                addText("You have gained 1 health potion.")
+            else:
+                addText("You have gained " + str(r) + " health potions.")
         else:
             addText("This box has nothing in it, because we're mean")
         board[pos[0]][pos[1]] = -65
@@ -312,14 +342,23 @@ def interact():
         addText("You've already been gifted something")
     else:
         addText("Nothing to see here...")
-    
+        
+def potion():
+    pl.hp += 2
+    pl.inv[0] = pl.inv[0] -1;
+    addText("A awfully fluorescent red potion. You drink it.")
+    updateStats()
 frame = tk.Frame(root)
+root.bind("<Up>", hi)
+root.bind("<Down>", hi2)
+root.bind("<Left>", hi3)
+root.bind("<Right>", hi4)
 tk.Button(frame, text="Left", command=left).grid(row=1, column=0, columnspan=2)
 tk.Button(frame, text="Right", command=right).grid(row=1, column=2, columnspan=2)
 tk.Button(frame, text="Up", command=up).grid(row=0, column=1, columnspan=2)
 tk.Button(frame, text="Down", command=down).grid(row=2, column=1, columnspan=2)
 tk.Button(frame, text="Interact", command=interact).grid(row=0, column=5)
-tk.Button(frame, text="Health Potion").grid(row=1, column=5)
+tk.Button(frame, text="Health Potion", command = potion).grid(row=1, column=5)
 tk.Button(frame, text="Eat Sugar").grid(row=2, column=5)
 
 frame.grid(row=1,column=0, columnspan=1)
