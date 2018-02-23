@@ -73,7 +73,7 @@ class Player:
         self.hp = 10
         self.knowledge = 10
         self.immune = 10
-        self.inv = [0,0,0]
+        self.inv = [0,0,0,0]
         self.xp = 0
     
     def addATP(self):

@@ -14,12 +14,10 @@ pos = [randint(1,23), randint(1,23)]
 player = canvas.create_oval(20*pos[0], 20*pos[1], 20*(pos[0]+1), 20*(pos[1]+1), fill="green")
 board = []
 rooms = [[[-1], [False,False,True,False], [-1]],[[False,False,True,True], [True,True,True,True], [False,True,True,False]],[[True,False,False,True], [True,True,True,True], [True,True,False,False]],[[-1],[True,False,False,False],[-1]]]
-light = False
 c = [3,1,-20]
 cover = None
 pl = Player()
-lock = False
-light = True
+box = None
 
 for i in range(1, 24):
     canvas.create_line(0, 20*i, 500, 20*i, fill="black")
@@ -44,7 +42,7 @@ def drawPlayer():
     global player
     global c
     f = "green"
-    if c[0] == 1 and c[1] == 1 and not light:
+    if c[0] == 1 and c[1] == 1 and pl.inv[3] <= 0:
         f = "black"
     canvas.delete(player)
     player = canvas.create_oval(20*pos[0], 20*pos[1], 20*(pos[0]+1), 20*(pos[1]+1), fill=f)
@@ -53,7 +51,7 @@ def drawEnemy(x,y,num):
     global en
     global c
     f = "red"
-    if c[0] == 1 and c[1] == 1 and not light:
+    if c[0] == 1 and c[1] == 1 and pl.inv[3] <= 0:
         f = "black"
     if num == 65:
         canvas.delete(en[0])
@@ -99,9 +97,14 @@ def newRoom():
     global rooms
     global en
     global cover
+    global box
     if cover != None:
         canvas.delete(cover)
         cover = None
+    if box != None:
+        canvas.delete(box[0])
+        board[box[1]][box[2]] = 0
+        box = None
     q = 0
     temp = [0,0]
     for door in doors:
@@ -117,7 +120,7 @@ def newRoom():
             temp = [480,480,480,480]
         if rooms[c[0]][c[1]][i]:
             temp[z] = 240
-            if c[0] == 1 and c[1] == 1 and lock and i == 0:
+            if c[0] == 1 and c[1] == 1 and pl.inv[2] == 0 and i == 0:
                 doors.append(canvas.create_rectangle(temp[0], temp[1], temp[0]+20, temp[1]+20, fill="brown")) 
             else:
                 doors.append(canvas.create_rectangle(temp[0], temp[1], temp[0]+20, temp[1]+20, fill="blue"))
@@ -125,12 +128,23 @@ def newRoom():
             board[jeff[0][i]][jeff[1][i]] = 1
         else:
             board[jeff[0][i]][jeff[1][i]] = 0
-    for i in range(0,len(en)):
-        board[enPos[i][0]][enPos[i][1]] = 0
+    if len(enPos) > 0 and enPos[0].name == "Rick Perry":
+        for i in range(0,3):
+            for j in range(0,3):
+                board[enPos[0][0]+i][enPos[0][1]+j] = 0           
+    else:
+        for i in range(0,len(en)):
+            board[enPos[i][0]][enPos[i][1]] = 0
     enemies()
-    if c[0] == 1 and c[1] == 1 and not light:
+    if c[0] == 1 and c[1] == 1 and pl.inv[3] <= 0:
         cover = canvas.create_rectangle(0,0,500,500, fill="black")
-    
+    elif c[:2] not in [[0,1],[1,1]]:
+        q = [randint(1,23), randint(1,23)]
+        while q == pos or board[q[0]][q[1]] >= 1:
+            q = [randint(1,23), randint(1,23)]
+        box = [canvas.create_rectangle(q[0]*20, q[1]*20, (q[0]+1)*20, (q[1]+1)*20, fill="brown"),q[0],q[1]]
+        board[q[0]][q[1]] = -1
+        
 def attackPlayer(num):
     addText("Took "+str(pl.attacked(enPos[num].knowledge))+" damage from "+enPos[num].name)
     if pl.hp <= 0:
@@ -151,7 +165,7 @@ def stuffHappens(jeff):
     global enPos
     oldPos = [pos[0]-jeff[0], pos[1]-jeff[1]]
     
-    if c[0] == 1 and c[1] == 1 and pos[0] == 12 and pos[1] == 0 and lock:
+    if c[0] == 1 and c[1] == 1 and pos == [12,0] and pl.inv[2] <= 0:
         addText("That door is locked, dingus")
         pos = oldPos 
     elif pos[0] <= 0:
@@ -197,9 +211,10 @@ def stuffHappens(jeff):
         if newX-1 <= 0 or newX+1 >= 25 or newY-1 <= 0 or newY+1 >= 25:
             newX = cen[0]
             newY = cen[1]
-        elif math.fabs(dx) <= 1 and math.fabs(dy) <= 1:
+        elif math.fabs(newX-pos[0]) <= 1 and math.fabs(newY-pos[1]) <= 1:
             newX = cen[0]
             newY = cen[1]
+            attackPlayer(0)
         
         for i in range(0,3):
             for j in range(0,3):
@@ -281,12 +296,29 @@ def down():
         pos[1] += 1
     stuffHappens([0,1])
     
+def interact():
+    if board[pos[0]][pos[1]] == -1:
+        q = randint(0,2)
+        if q == 0:
+            pl.inv[2] += 1
+            addText("You gained a key. Door unlocked!")
+        elif q == 1:
+            pl.inv[3] += 1
+            addText("You have gained a lamp. Let there be light")
+        else:
+            addText("This box has nothing in it, because we're mean")
+        board[pos[0]][pos[1]] = -65
+    elif board[pos[0]][pos[1]] == -65:
+        addText("You've already gotten something, don't expect us to be helpful")
+    else:
+        addText("Nothing to see here...")
+    
 frame = tk.Frame(root)
 tk.Button(frame, text="Left", command=left).grid(row=1, column=0, columnspan=2)
 tk.Button(frame, text="Right", command=right).grid(row=1, column=2, columnspan=2)
 tk.Button(frame, text="Up", command=up).grid(row=0, column=1, columnspan=2)
 tk.Button(frame, text="Down", command=down).grid(row=2, column=1, columnspan=2)
-tk.Button(frame, text="Interact").grid(row=0, column = 5)
+tk.Button(frame, text="Interact", command=interact).grid(row=0, column=5)
 tk.Button(frame, text="Health Potion").grid(row=1, column=5)
 tk.Button(frame, text="Eat Sugar").grid(row=2, column=5)
 
@@ -294,3 +326,4 @@ frame.grid(row=1,column=0, columnspan=1)
 updateStats()
 
 root.mainloop()
+#test
