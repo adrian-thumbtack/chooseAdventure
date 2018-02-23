@@ -121,7 +121,7 @@ def newRoom():
         if rooms[c[0]][c[1]][i]:
             temp[z] = 240
             if c[0] == 1 and c[1] == 1 and pl.inv[2] == 0 and i == 0:
-                doors.append(canvas.create_rectangle(temp[0], temp[1], temp[0]+20, temp[1]+20, fill="brown")) 
+                doors.append(canvas.create_rectangle(temp[0], temp[1], temp[0]+20, temp[1]+20, fill="orange")) 
             else:
                 doors.append(canvas.create_rectangle(temp[0], temp[1], temp[0]+20, temp[1]+20, fill="blue"))
             temp[z] = q
