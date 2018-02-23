@@ -20,6 +20,7 @@ cover = None
 pl = Player()
 lock = False
 light = True
+box = None
 
 for i in range(1, 24):
     canvas.create_line(0, 20*i, 500, 20*i, fill="black")
@@ -99,9 +100,13 @@ def newRoom():
     global rooms
     global en
     global cover
+    global box
     if cover != None:
         canvas.delete(cover)
         cover = None
+    if box != None:
+        canvas.delete(box)
+        box = None
     q = 0
     temp = [0,0]
     for door in doors:
@@ -136,7 +141,13 @@ def newRoom():
     enemies()
     if c[0] == 1 and c[1] == 1 and not light:
         cover = canvas.create_rectangle(0,0,500,500, fill="black")
-    
+    elif c[:2] not in [[0,1],[1,1]]:
+        q = [randint(1,23), randint(1,23)]
+        while q == pos or board[q[0]][q[1]] >= 1:
+            q = [randint(1,23), randint(1,23)]
+        box = canvas.create_rectangle(q[0]*20, q[1]*20, (q[0]+1)*20, (q[1]+1)*20, fill="brown")
+        board[q[0]][q[1]] = -1
+        
 def attackPlayer(num):
     addText("Took "+str(pl.attacked(enPos[num].knowledge))+" damage from "+enPos[num].name)
     if pl.hp <= 0:
@@ -157,7 +168,7 @@ def stuffHappens(jeff):
     global enPos
     oldPos = [pos[0]-jeff[0], pos[1]-jeff[1]]
     
-    if c[0] == 1 and c[1] == 1 and pos[0] == 12 and pos[1] == 0 and lock:
+    if c[0] == 1 and c[1] == 1 and pos == [12,0] and lock:
         addText("That door is locked, dingus")
         pos = oldPos 
     elif pos[0] <= 0:
