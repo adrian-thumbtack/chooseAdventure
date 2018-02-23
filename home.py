@@ -16,11 +16,10 @@ board = []
 rooms = [[[-1], [False,False,True,False], [-1]],[[False,False,True,True], [True,True,True,True], [False,True,True,False]],[[True,False,False,True], [True,True,True,True], [True,True,False,False]],[[-1],[True,False,False,False],[-1]]]
 light = False
 c = [3,1,-20]
-cover = 0
+cover = None
 pl = Player()
-lock = True
-light = True
 lock = False
+light = True
 
 for i in range(1, 24):
     canvas.create_line(0, 20*i, 500, 20*i, fill="black")
@@ -100,9 +99,9 @@ def newRoom():
     global rooms
     global en
     global cover
-    if cover != 0:
+    if cover != None:
         canvas.delete(cover)
-        cover = 0
+        cover = None
     q = 0
     temp = [0,0]
     for door in doors:
@@ -180,32 +179,61 @@ def stuffHappens(jeff):
         pos = oldPos
     drawPlayer()
     
-    for i in range(0,len(enPos)):
-        dx = enPos[i][0] - pos[0]
-        dy = enPos[i][1] - pos[1]
-        newX = enPos[i][0]
-        newY = enPos[i][1]
+    if len(enPos) > 0 and enPos[0].name == "Rick Perry":
+        cen = [enPos[0][0]+1, enPos[0][1]+1]
+        dx = cen[0] - pos[0]
+        dy = cen[1] - pos[1]
+        newX = cen[0]
+        newY = cen[1]
         if math.fabs(dx) > math.fabs(dy):
-            newX = enPos[i][0] - int(dx/math.fabs(dx))
+            newX = cen[0] - int(dx/math.fabs(dx))
         elif math.fabs(dy) > math.fabs(dx):
-            newY = enPos[i][1] - int(dy/math.fabs(dy))
+            newY = cen[1] - int(dy/math.fabs(dy))
         elif randint(0,1) == 0:
-            newX = enPos[i][0] - int(dx/math.fabs(dx))
+            newX = cen[0] - int(dx/math.fabs(dx))
         else:
-            newY = enPos[i][1] - int(dy/math.fabs(dy))
+            newY = cen[1] - int(dy/math.fabs(dy))
             
-        if board[newX][newY] >= 2 or newX <= 0 or newX >= 24 or newY >= 24 or newY <= 0:
+        if newX-1 <= 0 or newX+1 >= 25 or newY-1 <= 0 or newY+1 >= 25:
+            newX = cen[0]
+            newY = cen[1]
+        
+        for i in range(0,3):
+            for j in range(0,3):
+                board[enPos[0][0]+i][enPos[0][1]+j] = 0
+                board[newX-1+i][newY-1+j] = 2
+        
+        enPos[0].updatePos(newX-1,newY-1)
+        drawEnemy(enPos[0][0], enPos[0][1], 65)
+                
+        
+    else:
+        for i in range(0,len(enPos)):
+            dx = enPos[i][0] - pos[0]
+            dy = enPos[i][1] - pos[1]
             newX = enPos[i][0]
             newY = enPos[i][1]
-        elif newX == pos[0] and newY == pos[1]:
-            attackPlayer(i)
-            newX = enPos[i][0]
-            newY = enPos[i][1]
-        board[enPos[i][0]][enPos[i][1]] = 0   
-        board[newX][newY] = i+2   
-        enPos[i].updatePos(newX, newY)
-        drawEnemy(enPos[i][0], enPos[i][1], i)
-    updateStats()
+            if math.fabs(dx) > math.fabs(dy):
+                newX = enPos[i][0] - int(dx/math.fabs(dx))
+            elif math.fabs(dy) > math.fabs(dx):
+                newY = enPos[i][1] - int(dy/math.fabs(dy))
+            elif randint(0,1) == 0:
+                newX = enPos[i][0] - int(dx/math.fabs(dx))
+            else:
+                newY = enPos[i][1] - int(dy/math.fabs(dy))
+                
+            if board[newX][newY] >= 2 or newX <= 0 or newX >= 24 or newY >= 24 or newY <= 0:
+                newX = enPos[i][0]
+                newY = enPos[i][1]
+            elif newX == pos[0] and newY == pos[1]:
+                attackPlayer(i)
+                newX = enPos[i][0]
+                newY = enPos[i][1]
+            board[enPos[i][0]][enPos[i][1]] = 0   
+            board[newX][newY] = i+2   
+            enPos[i].updatePos(newX, newY)
+            drawEnemy(enPos[i][0], enPos[i][1], i)
+        updateStats()
     
 def addText(txt):
     if c[2] == 480:
