@@ -38,6 +38,7 @@ board[12][0] = 1
 doors = [canvas.create_rectangle(240, 0, 260, 20, fill="blue")]
 en = []
 enPos = []
+game = True
      
 def drawPlayer():
     global player
@@ -145,19 +146,34 @@ def newRoom():
             q = [randint(1,23), randint(1,23)]
         box = [canvas.create_rectangle(q[0]*20, q[1]*20, (q[0]+1)*20, (q[1]+1)*20, fill="brown"),q[0],q[1]]
         board[q[0]][q[1]] = -1
-        
+
+def endGame():
+    txt = None
+    if pl.hp == 0:
+        txt = "Game Over!"
+    else:
+        txt = "You win!" 
+    canvas.delete("all")
+    canvas.create_rectangle(0,0,500,500,fill="black")
+    canvas.create_text(230,230,anchor="nw",text=txt, fill="green")        
+                        
 def attackPlayer(num):
+    global game
     addText("Took "+str(pl.attacked(enPos[num].knowledge))+" damage from "+enPos[num].name)
     if pl.hp <= 0:
         addText("You died!")
         pl.hp = 0
+        game = False
     
 def attackEnemy(num):
+    global game
     addText("Dealt "+str(enPos[num].attacked(10,10))+" damage to "+enPos[num].name)
     if enPos[num].hp <= 0:
         addText(enPos[num].name+" died!")
         canvas.delete(en[num])
         board[enPos[num][0]][enPos[num][1]] = 0
+        if enPos[num].name == "Rick Perry":
+            game = False
         del enPos[num]
         del en[num]
         
@@ -252,7 +268,9 @@ def stuffHappens(jeff):
             board[newX][newY] = i+2   
             enPos[i].updatePos(newX, newY)
             drawEnemy(enPos[i][0], enPos[i][1], i)
-        updateStats()
+    updateStats()
+    if not game:
+        endGame()   
     
 def addText(txt):
     if c[2] == 480:
