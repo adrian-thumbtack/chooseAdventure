@@ -306,7 +306,7 @@ def interact():
             addText("This box has nothing in it, because we're mean")
         board[pos[0]][pos[1]] = -65
     elif board[pos[0]][pos[1]] == -65:
-        addText("You've already gotten something, don't expect us to be helpful")
+        addText("You've already been gifted something")
     else:
         addText("Nothing to see here...")
     
@@ -323,4 +323,3 @@ frame.grid(row=1,column=0, columnspan=1)
 updateStats()
 
 root.mainloop()
-#test
