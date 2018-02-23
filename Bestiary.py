@@ -71,8 +71,6 @@ class Player:
         self.name = ''
         self.level = 1
         self.hp = 10
-        self.glucose = 10
-        self.adrenaline = 0
         self.knowledge = 10
         self.immune = 10
         self.inv = [0,0,0]
