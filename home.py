@@ -125,8 +125,14 @@ def newRoom():
             board[jeff[0][i]][jeff[1][i]] = 1
         else:
             board[jeff[0][i]][jeff[1][i]] = 0
-    for i in range(0,len(en)):
-        board[enPos[i][0]][enPos[i][1]] = 0
+    if len(enPos) > 0 and enPos[0].name == "Rick Perry":
+        for i in range(0,3):
+            for j in range(0,3):
+                board[enPos[0][0]+i][enPos[0][1]+j] = 0
+                
+    else:
+        for i in range(0,len(en)):
+            board[enPos[i][0]][enPos[i][1]] = 0
     enemies()
     if c[0] == 1 and c[1] == 1 and not light:
         cover = canvas.create_rectangle(0,0,500,500, fill="black")
@@ -200,6 +206,7 @@ def stuffHappens(jeff):
         elif math.fabs(newX-pos[0]) <= 1 and math.fabs(newY-pos[1]) <= 1:
             newX = cen[0]
             newY = cen[1]
+            attackPlayer(0)
         
         for i in range(0,3):
             for j in range(0,3):
