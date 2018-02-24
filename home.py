@@ -299,9 +299,13 @@ def updateStats():
     if pl.inv[0] >= 1:
         item += "Health Potion (x" + str(pl.inv[0]) + ")"
     
-    statBar.create_text(0,0,text="Player Stats \n" + "HP: "+str(pl.hp) + "/" +str(pl.maxhp)+
+    statBar.create_text(0,0,text="Player Stats"+
+    "\nLevel: "+str(pl.level)+
+    "\nHP: "+str(pl.hp) + "/" +str(pl.maxhp)+
     "\nKnowledge (Attack): "+str(pl.knowledge)+  
-    "\nImmunity (Defense): "+str(pl.immune)+ "\n\nInventory \n" + str(item),
+    "\nImmunity (Defense): "+str(pl.immune)+
+    "\nXP: "+str(pl.xp)+"/"+str(10*pl.level**2)+
+    "\n\nInventory \n" + str(item),
     anchor='nw',font=('Courier'))
 
 def left():
@@ -369,6 +373,7 @@ def interact():
         addText("You've already been gifted something")
     else:
         addText("Nothing to see here...")
+    updateStats()
         
 def potion():
     if pl.inv[0] > 0:
@@ -378,6 +383,7 @@ def potion():
         updateStats()
     else:
         addText("No soup for you!")
+    updateStats()
 
 frame = tk.Frame(root)
 root.bind("<Up>", hi)
