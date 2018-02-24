@@ -241,8 +241,7 @@ def stuffHappens(jeff):
                 board[newX-1+i][newY-1+j] = 2
         
         enPos[0].updatePos(newX-1,newY-1)
-        drawEnemy(enPos[0][0], enPos[0][1], 65)
-                
+        drawEnemy(enPos[0][0], enPos[0][1], 65)    
         
     else:
         for i in range(0,len(enPos)):
@@ -259,15 +258,23 @@ def stuffHappens(jeff):
             else:
                 newY = enPos[i][1] - int(dy/math.fabs(dy))
                 
-            if board[newX][newY] >= 2 or newX <= 0 or newX >= 24 or newY >= 24 or newY <= 0:
+            if math.fabs(board[newX][newY]) >= 2 or newX <= 0 or newX >= 24 or newY >= 24 or newY <= 0:
                 newX = enPos[i][0]
                 newY = enPos[i][1]
             elif newX == pos[0] and newY == pos[1]:
                 attackPlayer(i)
                 newX = enPos[i][0]
                 newY = enPos[i][1]
-            board[enPos[i][0]][enPos[i][1]] = 0   
-            board[newX][newY] = i+2   
+                
+            if board[enPos[i][0]][enPos[i][1]] < 0:
+                board[enPos[i][0]][enPos[i][1]] = -1
+            else:
+                board[enPos[i][0]][enPos[i][1]] = 0
+                
+            if board[newX][newY] == 0:
+                board[newX][newY] = i+2 
+            else:
+                board[newX][newY] = -(i+2)  
             enPos[i].updatePos(newX, newY)
             drawEnemy(enPos[i][0], enPos[i][1], i)
     updateStats()
@@ -371,6 +378,7 @@ def potion():
         updateStats()
     else:
         addText("No soup for you!")
+
 frame = tk.Frame(root)
 root.bind("<Up>", hi)
 root.bind("<Down>", hi2)
