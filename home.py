@@ -167,8 +167,10 @@ def attackPlayer(num):
     
 def attackEnemy(num):
     global game
-    addText("Dealt "+str(enPos[num].attacked(10,10))+" damage to "+enPos[num].name)
+    addText("Dealt "+str(enPos[num].attacked(pl.knowledge,1))+" damage to "+enPos[num].name)
     if enPos[num].hp <= 0:
+        pl.giveXP(enPos[num].xp)
+        updateStats()
         addText(enPos[num].name+" died!")
         canvas.delete(en[num])
         board[enPos[num][0]][enPos[num][1]] = 0
@@ -288,9 +290,9 @@ def updateStats():
     if pl.inv[3] >= 1:
         item += "Oil Lamp\n"
     if pl.inv[0] >= 1:
-        item += "Health Potion (x" + pl.inv[0] + ")"
+        item += "Health Potion (x" + str(pl.inv[0]) + ")"
     
-    statBar.create_text(0,0,text="Player Stats \n" + "HP: "+str(pl.hp) + "/10" +
+    statBar.create_text(0,0,text="Player Stats \n" + "HP: "+str(pl.hp) + "/" +str(pl.maxhp)+
     "\nKnowledge (Attack): "+str(pl.knowledge)+  
     "\nImmunity (Defense): "+str(pl.immune)+ "\n\nInventory \n" + str(item),
     anchor='nw',font=('Courier'))
@@ -347,14 +349,14 @@ def interact():
             addText("You have gained a lamp. Let there be light")
             updateStats()
         elif q >= 2:
-            r = randint(1,4)
+            r = randint(1,3)
             pl.inv[0] += r
             if r == 1:
                 addText("You have gained 1 health potion.")
             else:
                 addText("You have gained " + str(r) + " health potions.")
         else:
-            addText("This box has nothing in it, because we're mean")
+            addText("This box has nothing, because we're mean")
         board[pos[0]][pos[1]] = -65
     elif board[pos[0]][pos[1]] == -65:
         addText("You've already been gifted something")
@@ -362,10 +364,13 @@ def interact():
         addText("Nothing to see here...")
         
 def potion():
-    pl.hp += 2
-    pl.inv[0] = pl.inv[0] -1;
-    addText("A awfully fluorescent red potion. You drink it.")
-    updateStats()
+    if pl.inv[0] > 0:
+        pl.inv[0] = pl.inv[0] -1;
+        addText("A awfully tacky red potion. You drink it.")
+        pl.hp = min(pl.hp+5,pl.maxhp)
+        updateStats()
+    else:
+        addText("No soup for you!")
 frame = tk.Frame(root)
 root.bind("<Up>", hi)
 root.bind("<Down>", hi2)

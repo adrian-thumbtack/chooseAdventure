@@ -71,9 +71,10 @@ class Player:
         self.name = ''
         self.level = 1
         self.hp = 10
+        self.maxhp = 10
         self.l = 1
         self.knowledge = 10
-        self.immune = 10
+        self.immune = 5
         self.inv = [0,0,0,0]
         self.xp = 0
     
@@ -93,8 +94,12 @@ class Player:
     
     def giveXP(self,xp):
         self.xp += xp
-        if xp >= 10*self.level**2:
-            xp -= 10*self.level**2
+        if self.xp >= 10*self.level**2:
+            self.xp -= 10*self.level**2
             self.level += 1
+            self.maxhp += 5
+            self.hp += 5
+            self.knowledge += 1
+            self.immune += 1
             return 1
         return 0
