@@ -55,6 +55,20 @@ def drawEnemy(x,y,num):
     f = "red"
     if c[0] == 1 and c[1] == 1 and pl.inv[3] <= 0:
         f = "black"
+    elif c[0] == 1 and c[1] == 0:
+        f = "orange"          
+    elif c[0] == 1 and c[1] == 1:
+        f = "brown"
+    elif c[0] == 1 and c[1] == 2:
+        f = "black"          
+    elif c[0] == 2 and c[1] == 0:
+        f = "forestgreen"           
+    elif c[0] == 2 and c[1] == 1:
+        f = "aquamarine"
+    elif c[0] == 2 and c[1] == 2:
+        f = "grey"        
+    elif c[0] == 3 and c[1] == 1:
+        f = "red"    
     if num == 65:
         canvas.delete(en[0])
         en[0] = canvas.create_oval(20*x, 20*y, 20*(x+3), 20*(y+3), fill="red")
@@ -427,7 +441,7 @@ def backpack():
         if pl.inv[1] >= 1:
             item += " Sugar (x" + str(pl.inv[1]) + ")\n"
     statBar.create_text(0,0,text=
-    "Backpack \n\n" + str(item),
+    " Backpack \n\n" + str(item),
     anchor='nw',font=('Courier',10))
 
 frame = tk.Frame(root)
@@ -441,8 +455,10 @@ tk.Button(frame, text="Up", command=up).grid(row=0, column=1, columnspan=2)
 tk.Button(frame, text="Down", command=down).grid(row=2, column=1, columnspan=2)
 tk.Button(frame, text="Interact", command=interact).grid(row=0, column=5)
 tk.Button(frame, text="Health Potion", command = potion).grid(row=1, column=5)
-tk.Button(frame, text="Eat Sugar", command = sugar).grid(row=1, column=6)
+tk.Button(frame, text="Eat Sugar", command = sugar).grid(row=2, column=5)
 tk.Button(frame, text="Backpack", command = backpack).grid(row=0, column=6)
+tk.Button(frame, text="Player Stats", command = updateStats).grid(row=1, column=6)
+
 
 frame.grid(row=1,column=0, columnspan=1)
 updateStats()
