@@ -77,12 +77,26 @@ def enemies():
     if c[0] != 0:
         for i in range(0,5):
             if len(enPos) < 5:
-                enPos.append(Enemy(1))
+                if c[0] == 1 and c[1] == 0:
+                    enPos.append(Mathematician(1))
+                if c[0] == 1 and c[1] == 1:
+                    enPos.append(Geologist(1))
+                if c[0] == 1 and c[1] == 2:
+                    enPos.append(Astronomer(1))
+                if c[0] == 2 and c[1] == 0:
+                    enPos.append(Biologist(1))
+                if c[0] == 2 and c[1] == 1:
+                    enPos.append(Chemist(1))
+                if c[0] == 2 and c[1] == 2:
+                    enPos.append(Physicist(1))
+                if c[0] == 3 and c[1] == 1:
+                    enPos.append(Enemy(1))
             enPos[i].updatePos(randint(1,23), randint(1,23))
             while enPos[i][0] == pos[0] and enPos[i][1] == pos[1]:
                 enPos[i] = [randint(1,23), randint(1,23)]
             drawEnemy(enPos[i][0], enPos[i][1], i)
             board[enPos[i][0]][enPos[i][1]] = (i+2)
+            
     else:
         en.append(canvas.create_oval(220,60,280,120,fill="red"))
         enPos.append(RickPerry())
@@ -159,7 +173,7 @@ def endGame():
                         
 def attackPlayer(num):
     global game
-    addText("Was " + enPos[num].attack + "d by " + enPos[num].name + " dealing " + str(pl.attacked(enPos[num].knowledge)) + " damage.")
+    addText("Was " + enPos[num].attack + " by " + enPos[num].name + " dealing " + str(pl.attacked(enPos[num].knowledge)) + " damage.")
     
     if pl.hp <= 0:
         addText("You died!")

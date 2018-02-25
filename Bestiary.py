@@ -25,44 +25,46 @@ class Enemy:
         elif i == 1: return self.yPos
 
 class Physicist(Enemy):
-    name = 'Physicist'
-    attack = 'physicificated'
+    self.name = 'Physicist'
+    self.attack = 'physicificated'
     def __init__(self,l):
-        Enemy.__init__(l)
+        Enemy.__init__(self,l)
 
 class Chemist(Enemy):
-    name = 'Chemist'
-    attack = 'chemistrificated'
+    self.name = 'Chemist'
+    self.attack = 'chemistrificated'
     def __init__(self,l):
-        Enemy.__init__(l)
+        Enemy.__init__(self,l)
+
 
 class Biologist(Enemy):
-    name = 'Biologist'
-    attack = 'biologificated'
+    self.name = 'Biologist'
+    self.attack = 'biologificated'
     def __init__(self,l):
-        Enemy.__init__(l)
+        Enemy.__init__(self,l)
 
+        
 class Astronomer(Enemy):
-    name = 'Astronomer'
-    attack = 'astronomificated'
+    self.name = 'Astronomer'
+    self.attack = 'astronomificated'
     def __init__(self,l):
-        Enemy.__init__(l)
+        Enemy.__init__(self,l)
 
 class Geologist(Enemy):
-    name = 'Geologist'
+    self.name = 'Geologist'
     attack = 'rockificated'
     def __init__(self,l):
-        Enemy.__init__(l)
+        Enemy.__init__(self,l)
 
 class Mathematician(Enemy):
-    name = 'Mathematician'
-    attack = 'mathematificated'
+    self.name = 'Mathematician'
+    self.attack = 'mathematificated'
     def __init__(self,l):
-        Enemy.__init__(l)
+        Enemy.__init__(self,l)
 
 class RickPerry(Enemy):
-    name = 'Rick Perry'
-    attack = 'frack'
+    self.name = 'Rick Perry'
+    self.attack = 'frack'
     def __init__(self):
         Enemy.__init__(self,10)
 
@@ -78,15 +80,6 @@ class Player:
         self.inv = [0,0,0,0]
         self.xp = 0
         self.sugar = 0
-    
-    def addATP(self):
-        self.inv[0] += 1
-    
-    def addPlatelets(self):
-        self.inv[1] += 1
-    
-    def addStarch(self):
-        self.inv[2] += 1
     
     def attacked(self,other_attack):
         damage = other_attack/self.immune
