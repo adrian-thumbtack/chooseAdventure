@@ -18,7 +18,7 @@ c = [3,1,-20]
 cover = None
 pl = Player()
 box = None
-
+pl.sugar = 0
 
 for i in range(1, 24):
     canvas.create_line(0, 20*i, 500, 20*i, fill="black")
@@ -167,7 +167,12 @@ def attackPlayer(num):
     
 def attackEnemy(num):
     global game
-    addText("Dealt "+str(enPos[num].attacked(pl.knowledge,1))+" damage to "+enPos[num].name)
+    addText("Dealt "+str(enPos[num].attacked(pl.knowledge,1))+" damage to "+enPos[num].name)     
+    if pl.sugar > 0:
+        addText("You feel a little woozy...")
+        pl.knowledge = pl.knowledge/(2*(2**(pl.sugar-1)))
+        pl.sugar = 0
+
     if enPos[num].hp <= 0:
         pl.giveXP(enPos[num].xp)
         updateStats()
@@ -178,7 +183,7 @@ def attackEnemy(num):
             game = False
         del enPos[num]
         del en[num]
-        
+  
 def stuffHappens(jeff):
     global pos
     global enPos
@@ -287,26 +292,28 @@ def addText(txt):
         c[2] = 0
     else:
         c[2] += 20
-    text.create_text(2,c[2],text=txt,anchor='nw',font=('Courier'))
+    text.create_text(2,c[2],text=txt,anchor='nw',font=('Courier',10))
 
 def updateStats():
     statBar.delete("all")
     item = ""
     if pl.inv[2] >= 1:
-        item += "Mysterious Key\n"
+        item += " Mysterious Key\n"
     if pl.inv[3] >= 1:
-        item += "Oil Lamp\n"
-    if pl.inv[0] >= 1:
-        item += "Health Potion (x" + str(pl.inv[0]) + ")"
+        item += " Oil Lamp\n"
+    #if pl.inv[0] >= 0:
+    item += " Health Potion (x" + str(pl.inv[0]) + ")\n"
+    #if pl.inv[1] >= 0:
+    item += " Sugar (x" + str(pl.inv[1]) + ")"
     
-    statBar.create_text(0,0,text="Player Stats"+
-    "\nLevel: "+str(pl.level)+
-    "\nHP: "+str(pl.hp) + "/" +str(pl.maxhp)+
-    "\nKnowledge (Attack): "+str(pl.knowledge)+  
-    "\nImmunity (Defense): "+str(pl.immune)+
-    "\nXP: "+str(pl.xp)+"/"+str(10*pl.level**2)+
-    "\n\nInventory \n" + str(item),
-    anchor='nw',font=('Courier'))
+    statBar.create_text(0,0,text=" Player Stats"+
+    "\n Level: "+str(pl.level)+
+    "\n HP: "+str(pl.hp) + "/" +str(pl.maxhp)+
+    "\n Knowledge (Attack): "+str(pl.knowledge)+  
+    "\n Immunity (Defense): "+str(pl.immune)+
+    "\n XP: "+str(pl.xp)+"/"+str(10*pl.level**2)+
+    "\n\n Inventory \n" + str(item),
+    anchor='nw',font=('Courier',10))
 
 def left():
     if (pos[0] <= 1 and board[0][pos[1]] == 0) or (pos[1] == 0 or pos[1] == 24):
@@ -359,7 +366,10 @@ def interact():
             pl.inv[3] += 1
             addText("You have gained a lamp. Let there be light")
             updateStats()
-        elif q >= 2:
+        elif q == 2 or q == 3:
+            pl.inv[1] += 1
+            addText("You got some C6H1206 (glucose). Sweet!")
+        elif q >=4 and q<=7:
             r = randint(1,3)
             pl.inv[0] += r
             if r == 1:
@@ -370,7 +380,7 @@ def interact():
             addText("This box has nothing, because we're mean")
         board[pos[0]][pos[1]] = -65
     elif board[pos[0]][pos[1]] == -65:
-        addText("You've already been gifted something")
+        addText("Again? Seriously?")
     else:
         addText("Nothing to see here...")
     updateStats()
@@ -385,6 +395,17 @@ def potion():
         addText("No soup for you!")
     updateStats()
 
+def sugar():
+    pl.inv[1] = pl.inv[1]-1
+    if pl.inv[1] < 0:
+        addText( "No more Skittles for you.")
+        pl.inv[1] = 0
+    else:
+        addText("An oncoming sugar rush has increased your next attack!")
+        pl.sugar +=1
+        pl.knowledge = pl.knowledge*2
+    updateStats()
+
 frame = tk.Frame(root)
 root.bind("<Up>", hi)
 root.bind("<Down>", hi2)
@@ -396,9 +417,9 @@ tk.Button(frame, text="Up", command=up).grid(row=0, column=1, columnspan=2)
 tk.Button(frame, text="Down", command=down).grid(row=2, column=1, columnspan=2)
 tk.Button(frame, text="Interact", command=interact).grid(row=0, column=5)
 tk.Button(frame, text="Health Potion", command = potion).grid(row=1, column=5)
-tk.Button(frame, text="Eat Sugar").grid(row=2, column=5)
+tk.Button(frame, text="Eat Sugar", command = sugar).grid(row=2, column=5)
 
 frame.grid(row=1,column=0, columnspan=1)
 updateStats()
-
+    
 root.mainloop()

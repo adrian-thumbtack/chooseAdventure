@@ -77,6 +77,7 @@ class Player:
         self.immune = 5
         self.inv = [0,0,0,0]
         self.xp = 0
+        self.sugar = 0
     
     def addATP(self):
         self.inv[0] += 1
