@@ -25,44 +25,46 @@ class Enemy:
         elif i == 1: return self.yPos
 
 class Physicist(Enemy):
-    name = 'Physicist'
-    attack = 'physicificated'
+    self.name = 'Physicist'
+    self.attack = 'physicificated'
     def __init__(self,l):
         Enemy.__init__(self,l)
 
 class Chemist(Enemy):
-    name = 'Chemist'
-    attack = 'chemistrificated'
+    self.name = 'Chemist'
+    self.attack = 'chemistrificated'
     def __init__(self,l):
         Enemy.__init__(self,l)
 
+
 class Biologist(Enemy):
-    name = 'Biologist'
-    attack = 'biologificated'
+    self.name = 'Biologist'
+    self.attack = 'biologificated'
     def __init__(self,l):
         Enemy.__init__(self,l)
+
         
 class Astronomer(Enemy):
-    name = 'Astronomer'
-    attack = 'astronomificated'
+    self.name = 'Astronomer'
+    self.attack = 'astronomificated'
     def __init__(self,l):
         Enemy.__init__(self,l)
 
 class Geologist(Enemy):
-    name = 'Geologist'
+    self.name = 'Geologist'
     attack = 'rockificated'
     def __init__(self,l):
         Enemy.__init__(self,l)
 
 class Mathematician(Enemy):
-    name = 'Mathematician'
-    attack = 'mathematificated'
+    self.name = 'Mathematician'
+    self.attack = 'mathematificated'
     def __init__(self,l):
         Enemy.__init__(self,l)
 
 class RickPerry(Enemy):
-    name = 'Rick Perry'
-    attack = 'frack'
+    self.name = 'Rick Perry'
+    self.attack = 'frack'
     def __init__(self):
         Enemy.__init__(self,10)
 
