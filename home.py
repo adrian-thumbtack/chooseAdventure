@@ -84,8 +84,9 @@ drawPlayer()
 
 def enemies():
     global enPos
-    p = len(enPos)
-    for i in range(0, p):
+	global en
+	global board
+    while len(enPos) > 0:
         del enPos[0]
         del en[0]
     if c[0] != 0:
@@ -128,6 +129,7 @@ def newRoom():
     global en
     global cover
     global box
+	global board
     if cover != None:
         canvas.delete(cover)
         cover = None
@@ -163,7 +165,7 @@ def newRoom():
             for j in range(0,3):
                 board[enPos[0][0]+i][enPos[0][1]+j] = 0           
     else:
-        for i in range(0,len(en)):
+        for i in range(0,len(enPos)):
             board[enPos[i][0]][enPos[i][1]] = 0
     enemies()
     if c[0] == 1 and c[1] == 1 and pl.inv[3] <= 0:
@@ -196,6 +198,7 @@ def attackPlayer(num):
     
 def attackEnemy(num):
     global game
+	global board
     addText("Dealt "+str(enPos[num].attacked(pl.knowledge,1))+" damage to "+enPos[num].name)     
     if pl.sugar > 0:
         addText("You feel a little woozy...")
@@ -216,6 +219,7 @@ def attackEnemy(num):
 def stuffHappens(jeff):
     global pos
     global enPos
+	global board
     oldPos = [pos[0]-jeff[0], pos[1]-jeff[1]]
     
     if c[0] == 1 and c[1] == 1 and pos == [12,0] and pl.inv[2] <= 0:
@@ -242,7 +246,7 @@ def stuffHappens(jeff):
             newRoom()
             pos[1] = 0
     elif board[pos[0]][pos[1]] >= 2: #when player attacks an enemy
-        attackEnemy(board[pos[0]][pos[1]] - 2) #Replace with a lower stats thing
+        attackEnemy(board[pos[0]][pos[1]]-2) #Replace with a lower stats thing
         pos = oldPos
     drawPlayer()
     
@@ -274,9 +278,8 @@ def stuffHappens(jeff):
                 board[enPos[0][0]+i][enPos[0][1]+j] = 0
                 board[newX-1+i][newY-1+j] = 2
         
-        enPos[0].updatePos(newX-1,newY-1)
+        enPos[0].updatePos((newX-1),(newY-1))
         drawEnemy(enPos[0][0], enPos[0][1], 65)    
-        
     else:
         for i in range(0,len(enPos)):
             dx = enPos[i][0] - pos[0]
@@ -335,6 +338,7 @@ def updateStats():
     anchor='nw',font=('Courier',10))
 
 def left():
+	global pos
     if (pos[0] <= 1 and board[0][pos[1]] == 0) or (pos[1] == 0 or pos[1] == 24):
         addText("You have now reached peak neoliberalism.")
     else:
@@ -342,6 +346,7 @@ def left():
     stuffHappens([-1,0])
     
 def right():
+	global pos
     if (pos[0] >= 23 and board[24][pos[1]] == 0) or (pos[1] == 0 or pos[1] == 24):
         addText("Is this the right way?")
     else:
@@ -349,6 +354,7 @@ def right():
     stuffHappens([1,0])
     
 def up():
+	global pos
     if (pos[1] <= 1 and board[pos[0]][0] == 0) or (pos[0] == 0 or pos[0] == 24):
         addText("Y'all are just so uppity!")
     else:
@@ -356,6 +362,7 @@ def up():
     stuffHappens([0,-1])
     
 def down():
+	global pos
     if (pos[1] >= 23 and board[pos[0]][24] == 0) or (pos[0] == 0 or pos[0] == 24):
         addText("Dude, I LOVE walls!!!")
     else:
@@ -375,6 +382,7 @@ def hi4(key):
     right()
     
 def interact():
+	global board
     if board[pos[0]][pos[1]] == -1:
         q = randint(0,10)
         if q == 0:
