@@ -311,23 +311,13 @@ def addText(txt):
 
 def updateStats():
     statBar.delete("all")
-    item = ""
-    if pl.inv[2] >= 1:
-        item += " Mysterious Key\n"
-    if pl.inv[3] >= 1:
-        item += " Oil Lamp\n"
-    #if pl.inv[0] >= 0:
-    item += " Health Potion (x" + str(pl.inv[0]) + ")\n"
-    #if pl.inv[1] >= 0:
-    item += " Sugar (x" + str(pl.inv[1]) + ")"
     
     statBar.create_text(0,0,text=" Player Stats"+
     "\n Level: "+str(pl.level)+
     "\n HP: "+str(pl.hp) + "/" +str(pl.maxhp)+
     "\n Knowledge (Attack): "+str(pl.knowledge)+  
     "\n Immunity (Defense): "+str(pl.immune)+
-    "\n XP: "+str(pl.xp)+"/"+str(10*pl.level**2)+
-    "\n\n Inventory \n" + str(item),
+    "\n XP: "+str(pl.xp)+"/"+str(10*pl.level**2),
     anchor='nw',font=('Courier',10))
 
 def left():
@@ -421,6 +411,26 @@ def sugar():
         pl.knowledge = pl.knowledge*2
     updateStats()
 
+def backpack():
+    statBar.delete("all")
+    item = ""
+    if pl.inv[2]>=1 or pl.inv[3]>=1:
+        item += " Key Items:\n"    
+        if pl.inv[2] >= 1:
+            item += " Mysterious Key\n"
+        if pl.inv[3] >= 1:
+            item += " Oil Lamp\n"
+    if pl.inv[0] >= 1 or pl.inv[1]>=1:
+        item += "\n Consumables:\n"
+        if pl.inv[0] >= 1:
+            item += " Health Potion (x" + str(pl.inv[0]) + ")\n"
+        if pl.inv[1] >= 1:
+            item += " Sugar (x" + str(pl.inv[1]) + ")\n"
+    print "mem"
+    statBar.create_text(0,0,text=
+    "Backpack \n\n" + str(item),
+    anchor='nw',font=('Courier',10))
+
 frame = tk.Frame(root)
 root.bind("<Up>", hi)
 root.bind("<Down>", hi2)
@@ -432,7 +442,8 @@ tk.Button(frame, text="Up", command=up).grid(row=0, column=1, columnspan=2)
 tk.Button(frame, text="Down", command=down).grid(row=2, column=1, columnspan=2)
 tk.Button(frame, text="Interact", command=interact).grid(row=0, column=5)
 tk.Button(frame, text="Health Potion", command = potion).grid(row=1, column=5)
-tk.Button(frame, text="Eat Sugar", command = sugar).grid(row=2, column=5)
+tk.Button(frame, text="Eat Sugar", command = sugar).grid(row=1, column=6)
+tk.Button(frame, text="Backpack", command = backpack).grid(row=0, column=6)
 
 frame.grid(row=1,column=0, columnspan=1)
 updateStats()
