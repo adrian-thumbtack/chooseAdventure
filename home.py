@@ -1,4 +1,4 @@
-import tkinter as tk
+import Tkinter as tk
 from random import randint
 from Bestiary import *
 import math
