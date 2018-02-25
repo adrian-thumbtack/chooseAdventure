@@ -159,7 +159,8 @@ def endGame():
                         
 def attackPlayer(num):
     global game
-    addText("Took "+str(pl.attacked(enPos[num].knowledge))+" damage from "+enPos[num].name)
+    addText("Was " + enPos[num].attack + "d by " + enPos[num].name + " dealing " + str(pl.attacked(enPos[num].knowledge)) + " damage.")
+    
     if pl.hp <= 0:
         addText("You died!")
         pl.hp = 0

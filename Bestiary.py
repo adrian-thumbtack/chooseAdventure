@@ -1,6 +1,6 @@
 class Enemy:
     name = 'Scientist'
-    attack = 'scientificate'
+    attack = 'scientificated'
     def __init__(self,l):
         self.hp = 10*l
         self.knowledge = 10*l**2
@@ -26,37 +26,37 @@ class Enemy:
 
 class Physicist(Enemy):
     name = 'Physicist'
-    attack = 'physicificate'
+    attack = 'physicificated'
     def __init__(self,l):
         Enemy.__init__(l)
 
 class Chemist(Enemy):
     name = 'Chemist'
-    attack = 'chemistrificate'
+    attack = 'chemistrificated'
     def __init__(self,l):
         Enemy.__init__(l)
 
 class Biologist(Enemy):
     name = 'Biologist'
-    attack = 'biologificate'
+    attack = 'biologificated'
     def __init__(self,l):
         Enemy.__init__(l)
 
 class Astronomer(Enemy):
     name = 'Astronomer'
-    attack = 'astronomificate'
+    attack = 'astronomificated'
     def __init__(self,l):
         Enemy.__init__(l)
 
 class Geologist(Enemy):
     name = 'Geologist'
-    attack = 'rockificate'
+    attack = 'rockificated'
     def __init__(self,l):
         Enemy.__init__(l)
 
 class Mathematician(Enemy):
     name = 'Mathematician'
-    attack = 'mathematificate'
+    attack = 'mathematificated'
     def __init__(self,l):
         Enemy.__init__(l)
 
