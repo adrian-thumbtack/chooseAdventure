@@ -2,9 +2,9 @@ class Enemy:
     name = 'Scientist'
     attack = 'scientificated'
     def __init__(self,l):
-        self.hp = 10*l
-        self.knowledge = 10*l**2
-        self.immune = l**2
+        self.hp = 5*l+5
+        self.knowledge = 10*l
+        self.immune = 1.5*l-0.5
         self.xp = 10*l
         self.level = l
         self.power = 10
@@ -93,7 +93,7 @@ class Player:
             self.level += 1
             self.maxhp += 5
             self.hp += 5
-            self.knowledge += 1
+            self.knowledge += 2
             self.immune += 1
             return 1
         return 0
