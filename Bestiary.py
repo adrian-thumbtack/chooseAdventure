@@ -12,7 +12,7 @@ class Enemy:
         self.yPos = 0
         
     def attacked(self,other_attack,other_power):
-        damage = other_power*other_attack/self.immune
+        damage = int(other_power*other_attack/self.immune)
         self.hp -= damage
         return damage
     
@@ -42,7 +42,6 @@ class Biologist(Enemy):
     attack = 'biologificated'
     def __init__(self,l):
         Enemy.__init__(self,l)
-
         
 class Astronomer(Enemy):
     name = 'Astronomer'
@@ -77,13 +76,14 @@ class Player:
         self.l = 1
         self.knowledge = 10
         self.immune = 5
-        self.inv = [0,0,0,0]
+        #potions, sugar, key, lamp, textbook, chloroplast, distiller, mirror, compass, seismograph, solar flare
+        self.inv = [0,0,0,0,False,False,False,False,False,False,False]
         self.xp = 0
         self.sugar = 0
     
     def attacked(self,other_attack):
         damage = other_attack/self.immune
-        self.hp -= damage
+        self.hp -= int(damage)
         return damage
     
     def giveXP(self,xp):
@@ -91,9 +91,9 @@ class Player:
         if self.xp >= 10*self.level**2:
             self.xp -= 10*self.level**2
             self.level += 1
-            self.maxhp += 5
-            self.hp += 5
-            self.knowledge += 2
-            self.immune += 1
+            self.maxhp += 10
+            self.hp += 10
+            self.knowledge += 4
+            self.immune += 2
             return 1
         return 0

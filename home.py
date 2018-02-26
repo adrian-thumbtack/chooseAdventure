@@ -12,7 +12,7 @@ text = tk.Canvas(root, height=500, width=500, bg="white")
 text.grid(row=0, column=1)
 statBar = tk.Canvas(root, height=200, width=500, bg="white")
 statBar.grid(row=1, column=1)
-pos = [randint(1,23), randint(1,23)]	#Generate random start position
+pos = [randint(1,23), randint(1,23)]    #Generate random start position
 player = canvas.create_oval(20*pos[0], 20*pos[1], 20*(pos[0]+1), 20*(pos[1]+1), fill="green")
 board = []
 
@@ -58,17 +58,17 @@ def drawPlayer():
     global c
     f = "green"
     if c[0] == 1 and c[1] == 1 and pl.inv[3] <= 0:
-        f = "black"			#If room is dark, display player as black so it can't be seen
-    canvas.delete(player)	#Delete existing player circle to replace it	
-    player = canvas.create_oval(20*pos[0], 20*pos[1], 20*(pos[0]+1), 20*(pos[1]+1), fill=f)	#Draw new player
+        f = "black"         #If room is dark, display player as black so it can't be seen
+    canvas.delete(player)   #Delete existing player circle to replace it    
+    player = canvas.create_oval(20*pos[0], 20*pos[1], 20*(pos[0]+1), 20*(pos[1]+1), fill=f) #Draw new player
     
 def drawEnemy(x,y,num):
     '''Draw enemy at index num in the en array at given position (x,y)'''
     global en
     global c
     f = "red"
-	
-	#Based on the room, change the color of the enemies
+    
+    #Based on the room, change the color of the enemies
     if c[0] == 1 and c[1] == 1 and pl.inv[3] <= 0:
         f = "black"
     elif c[0] == 1 and c[1] == 0:
@@ -85,8 +85,8 @@ def drawEnemy(x,y,num):
         f = "grey"        
     elif c[0] == 3 and c[1] == 1:
         f = "red"    
-		
-	#If final boss (65), draw a circle occupying 9 squares, otherwise, draw a red square defined by en[num]
+        
+    #If final boss (65), draw a circle occupying 9 squares, otherwise, draw a red square defined by en[num]
     if num == 65:
         canvas.delete(en[0])
         en[0] = canvas.create_oval(20*x, 20*y, 20*(x+3), 20*(y+3), fill="red")
@@ -98,20 +98,20 @@ def drawEnemy(x,y,num):
         canvas.delete(en[num])
         en[num] = canvas.create_oval(20*x, 20*y, 20*(x+1), 20*(y+1), fill=f)
 
-drawPlayer()	#initialize player
+drawPlayer()    #initialize player
 
 def enemies():
     '''Draw all enemies in a given room given the room defined by c[0] and c[1]'''
     global enPos
     global en
     global board
-	
-	#Delete all existing enemies from previous room
+    
+    #Delete all existing enemies from previous room
     while len(enPos) > 0:
         del enPos[0]
         del en[0]
-		
-	#In any room except the final boss room, generate enemies given by a type of scientist
+        
+    #In any room except the final boss room, generate enemies given by a type of scientist
     if c[0] != 0:
         for i in range(0,5):
             if len(enPos) < 5:
@@ -129,24 +129,24 @@ def enemies():
                     enPos.append(Physicist(rooms[c[0]][c[1]][1]))
                 if c[0] == 3 and c[1] == 1:
                     enPos.append(Enemy(rooms[c[0]][c[1]][1]))
-            enPos[i].updatePos(randint(1,23), randint(1,23))		#Generate start enemy position
-            while enPos[i][0] == pos[0] and enPos[i][1] == pos[1]:	#Make sure en position is not player position
+            enPos[i].updatePos(randint(1,23), randint(1,23))        #Generate start enemy position
+            while enPos[i][0] == pos[0] and enPos[i][1] == pos[1]:  #Make sure en position is not player position
                 enPos[i] = [randint(1,23), randint(1,23)]
             drawEnemy(enPos[i][0], enPos[i][1], i)
-            board[enPos[i][0]][enPos[i][1]] = (i+2)					#Give every enemy an identifying number in the board array
+            board[enPos[i][0]][enPos[i][1]] = (i+2)                 #Give every enemy an identifying number in the board array
             
-	#Final boss room
+    #Final boss room
     else:
-		#Initialize Rick Perry, the fearsome final foe
+        #Initialize Rick Perry, the fearsome final foe
         en.append(canvas.create_oval(220,60,280,120,fill="red"))
         enPos.append(RickPerry())
         enPos[0].updatePos(11,3)
-        for i in range(0,3):	#Set all 9 squares to the number 2 to identify Rick Perry
+        for i in range(0,3):    #Set all 9 squares to the number 2 to identify Rick Perry
             for j in range(0,3):
                 board[enPos[0][0]+i][enPos[0][1]+j] = 2
         drawEnemy(enPos[0][0],enPos[0][1],65)
         
-enemies()	#Initialize enemies
+enemies()   #Initialize enemies
 
 def newRoom():
     '''Every time a player enters a new room, initialize boxes, enemies, etc. Uses the global variables doors, rooms, en, cover, box, and board to determine room conditions'''
@@ -156,27 +156,27 @@ def newRoom():
     global cover
     global box
     global board
-	
-	#If exiting a dark room, remove the darkness; let there be light!
+    
+    #If exiting a dark room, remove the darkness; let there be light!
     if cover != None:
         canvas.delete(cover)
         cover = None
-		
-	#If a box existed, delete the box
+        
+    #If a box existed, delete the box
     if box != None:
         canvas.delete(box[0])
         board[box[1]][box[2]] = 0
         box = None
     q = 0
     temp = [0,0]
-	
-	#Delete all existing doors and enemies so they don't reappear in new room
+    
+    #Delete all existing doors and enemies so they don't reappear in new room
     for door in doors:
         canvas.delete(door)
     for enemy in en:
         canvas.delete(enemy)
-		
-	#Based on rooms array, draw the doors in the room with math that works
+        
+    #Based on rooms array, draw the doors in the room with math that works
     for i in range(0,4):
         jeff = [[12,0,12,24],[0,12,24,12]]
         z = i
@@ -194,8 +194,8 @@ def newRoom():
             board[jeff[0][i]][jeff[1][i]] = 1
         else:
             board[jeff[0][i]][jeff[1][i]] = 0
-			
-	#If you're exiting Rick Perry's room, clear all the markers in board array
+            
+    #If you're exiting Rick Perry's room, clear all the markers in board array
     if len(enPos) > 0 and enPos[0].name == "Rick Perry":
         for i in range(0,3):
             for j in range(0,3):
@@ -203,13 +203,13 @@ def newRoom():
     else: #Otherwise, clear all enemy fields
         for i in range(0,len(enPos)):
             board[enPos[i][0]][enPos[i][1]] = 0
-			
-    enemies()	#Generates new enemies
-    if c[0] == 1 and c[1] == 1 and pl.inv[3] <= 0:	#If entering dark room without light source, it must be dark
-        cover = canvas.create_rectangle(0,0,500,500, fill="black")	#Cover makes the room dark by drawing a black square
-    elif c[:2] not in [[0,1],[1,1]]:				#Create a box if not two certain rooms
+            
+    enemies()   #Generates new enemies
+    if c[0] == 1 and c[1] == 1 and pl.inv[3] <= 0:  #If entering dark room without light source, it must be dark
+        cover = canvas.create_rectangle(0,0,500,500, fill="black")  #Cover makes the room dark by drawing a black square
+    elif c[:2] not in [[0,1],[1,1]]:                #Create a box if not two certain rooms
         q = [randint(1,23), randint(1,23)]
-        while q == pos or board[q[0]][q[1]] >= 1:	#Box Position should not be player pos or enemy pos
+        while q == pos or board[q[0]][q[1]] >= 1:   #Box Position should not be player pos or enemy pos
             q = [randint(1,23), randint(1,23)]
         box = [canvas.create_rectangle(q[0]*20, q[1]*20, (q[0]+1)*20, (q[1]+1)*20, fill="brown"),q[0],q[1]]
         board[q[0]][q[1]] = -1
@@ -217,12 +217,12 @@ def newRoom():
 def endGame():
     '''Displays green text on black background describing the end result, either "Game Over" or "You win!". This function only activates if the Boolean variable game has a value of false'''
     txt = None
-    if pl.hp == 0:			#If player is dead, game is over
+    if pl.hp == 0:          #If player is dead, game is over
         txt = "Game Over!"
-    else:					#Otherwise, you win!!!
+    else:                   #Otherwise, you win!!!
         txt = "You win!" 
-		
-	#Clear everything from the canvas, and display end message
+        
+    #Clear everything from the canvas, and display end message
     canvas.delete("all")
     canvas.create_rectangle(0,0,500,500,fill="black")
     canvas.create_text(230,230,anchor="nw",text=txt, fill="green")        
@@ -230,9 +230,9 @@ def endGame():
 def attackPlayer(num):
     '''Enemy given by enPos[num] attacks player and deals damage'''
     global game
-    addText("Was " + enPos[num].attack + " by " + enPos[num].name + " dealing " + str(pl.attacked(enPos[num].knowledge)) + " damage.")	#Display damage dealt to player
+    addText("Was " + enPos[num].attack + " by " + enPos[num].name + " dealing " + str(pl.attacked(enPos[num].knowledge)) + " damage.")  #Display damage dealt to player
     
-    if pl.hp <= 0:	#At player death, display message and trigger endGame() by setting game to False
+    if pl.hp <= 0:  #At player death, display message and trigger endGame() by setting game to False
         addText("You died!")
         pl.hp = 0
         game = False
@@ -241,139 +241,139 @@ def attackEnemy(num):
     '''Player attacks an enemy given by enPos[num] and deals damage to enemy and gains experience'''
     global game
     global board
-    addText("Dealt "+str(enPos[num].attacked(pl.knowledge,1))+" damage to "+enPos[num].name)	#Display damage dealt to enemy  
-    if pl.sugar > 0:	#Player loses sugar if player had sugar
+    addText("Dealt "+str(enPos[num].attacked(pl.knowledge,1))+" damage to "+enPos[num].name)    #Display damage dealt to enemy  
+    if pl.sugar > 0:    #Player loses sugar if player had sugar
         addText("You feel a little woozy...")
         pl.knowledge = pl.knowledge/(2*(2**(pl.sugar-1)))
         pl.sugar = 0
 
-    if enPos[num].hp <= 0:	#If an enemy dies, delete the enemy and player gains dropped xp
+    if enPos[num].hp <= 0:  #If an enemy dies, delete the enemy and player gains dropped xp
         pl.giveXP(enPos[num].xp)
         updateStats()
         addText(enPos[num].name+" died!")
         canvas.delete(en[num])
         board[enPos[num][0]][enPos[num][1]] = 0
-        if enPos[num].name == "Rick Perry":	#If the killed enemy was Rick Perry, the endGame() function is triggered
+        if enPos[num].name == "Rick Perry": #If the killed enemy was Rick Perry, the endGame() function is triggered
             game = False
         del enPos[num]
         del en[num]
-		
+        
     if len(enPos) == 0:
-	    rooms[c[0]][c[1]][1] += 1	#Increase enemy level the next time the room is entered
-	
+        rooms[c[0]][c[1]][1] += 1   #Increase enemy level the next time the room is entered
+    
   
 def stuffHappens(jeff):
-	'''This function defines the movement of all enemies and the player. It takes one argument:
-		jeff - an array in the format [x,y] which describes the player's movement using the numbers -1, 0, and 1'''
-	global pos
-	global enPos
-	global board
-	global c
-	oldPos = [pos[0]-jeff[0], pos[1]-jeff[1]]	#Calculate a player's old position using the change given by jeff
-	
-	if not game:	#Catch movement if game has ended
-		addText("The game is over, nice try")
-	else:
-		if c[0] == 1 and c[1] == 1 and pos == [12,0] and pl.inv[2] <= 0:	#If the player attempts to move through a locked door without a key, deny them
-			addText("That door is locked, dingus")
-			pos = oldPos 
-		elif pos[0] <= 0:	#All cases for a player moving back through a door; generates new room and changes c based on which room the user enters
-			if pos[1] == oldPos[1]:
-				c[1] -= 1
-				newRoom()
-				pos[0] = 24
-		elif pos[0] >= 24:
-			if pos[1] == oldPos[1]:
-				c[1] += 1
-				newRoom()
-				pos[0] = 0
-		elif pos[1] <= 0:
-			if pos[0] == oldPos[0]:
-				c[0] -= 1
-				newRoom()
-				pos[1] = 24
-		elif pos[1] >= 24:
-			if pos[0] == oldPos[0]:
-				c[0] += 1
-				newRoom()
-				pos[1] = 0
-		elif board[pos[0]][pos[1]] >= 2: #The player attacks an enemy
-			attackEnemy(board[pos[0]][pos[1]]-2) #Attack enemy, consequences and results shown in attackEnemy() function
-			pos = oldPos
-		drawPlayer()
+    '''This function defines the movement of all enemies and the player. It takes one argument:
+        jeff - an array in the format [x,y] which describes the player's movement using the numbers -1, 0, and 1'''
+    global pos
+    global enPos
+    global board
+    global c
+    oldPos = [pos[0]-jeff[0], pos[1]-jeff[1]]   #Calculate a player's old position using the change given by jeff
     
-		#Rick Perry's automated moves with respect to the center of his circle of radius 1.5 squares.
-		if len(enPos) > 0 and enPos[0].name == "Rick Perry":
-			cen = [enPos[0][0]+1, enPos[0][1]+1]
-			#Calculate difference in x distance and y distance to player
-			dx = cen[0] - pos[0]
-			dy = cen[1] - pos[1]
-			newX = cen[0]
-			newY = cen[1]
-			#Advance in the direction with greater difference
-			if math.fabs(dx) > math.fabs(dy):
-				newX = cen[0] - int(dx/math.fabs(dx))
-			elif math.fabs(dy) > math.fabs(dx):
-				newY = cen[1] - int(dy/math.fabs(dy))
-			elif randint(0,1) == 0:
-				newX = cen[0] - int(dx/math.fabs(dx))
-			else:
-				newY = cen[1] - int(dy/math.fabs(dy))
-			if newX-1 <= 0 or newX+1 >= 25 or newY-1 <= 0 or newY+1 >= 25:
-				newX = cen[0]
-				newY = cen[1]
-			elif math.fabs(newX-pos[0]) <= 1 and math.fabs(newY-pos[1]) <= 1:
-				newX = cen[0]
-				newY = cen[1]
-				attackPlayer(0)
-			#Replace 0's with 2 in board to identify enemy
-			for i in range(0,3):
-				for j in range(0,3):
-					board[enPos[0][0]+i][enPos[0][1]+j] = 0
-					board[newX-1+i][newY-1+j] = 2
-			enPos[0].updatePos((newX-1),(newY-1))
-			drawEnemy(enPos[0][0], enPos[0][1], 65)    
-		else:	#Do the same thing as above, but with only one square instead of 9
-			for i in range(0,len(enPos)):
-				dx = enPos[i][0] - pos[0]
-				dy = enPos[i][1] - pos[1]
-				newX = enPos[i][0]
-				newY = enPos[i][1]
-				if math.fabs(dx) > math.fabs(dy):
-					newX = enPos[i][0] - int(dx/math.fabs(dx))
-				elif math.fabs(dy) > math.fabs(dx):
-					newY = enPos[i][1] - int(dy/math.fabs(dy))
-				elif randint(0,1) == 0:
-					newX = enPos[i][0] - int(dx/math.fabs(dx))
-				else:
-					newY = enPos[i][1] - int(dy/math.fabs(dy))   
-				if math.fabs(board[newX][newY]) >= 2 or newX <= 0 or newX >= 24 or newY >= 24 or newY <= 0:
-					newX = enPos[i][0]
-					newY = enPos[i][1]
-				elif newX == pos[0] and newY == pos[1]:
-					attackPlayer(i)
-					newX = enPos[i][0]
-					newY = enPos[i][1]
-				#If this square was originally a box, restore the box
-				if board[enPos[i][0]][enPos[i][1]] < 0:
-					board[enPos[i][0]][enPos[i][1]] = -1
-				else:
-					board[enPos[i][0]][enPos[i][1]] = 0
+    if not game:    #Catch movement if game has ended
+        addText("The game is over, nice try")
+    else:
+        if c[0] == 1 and c[1] == 1 and pos == [12,0] and pl.inv[2] <= 0:    #If the player attempts to move through a locked door without a key, deny them
+            addText("That door is locked, dingus")
+            pos = oldPos 
+        elif pos[0] <= 0:   #All cases for a player moving back through a door; generates new room and changes c based on which room the user enters
+            if pos[1] == oldPos[1]:
+                c[1] -= 1
+                newRoom()
+                pos[0] = 24
+        elif pos[0] >= 24:
+            if pos[1] == oldPos[1]:
+                c[1] += 1
+                newRoom()
+                pos[0] = 0
+        elif pos[1] <= 0:
+            if pos[0] == oldPos[0]:
+                c[0] -= 1
+                newRoom()
+                pos[1] = 24
+        elif pos[1] >= 24:
+            if pos[0] == oldPos[0]:
+                c[0] += 1
+                newRoom()
+                pos[1] = 0
+        elif board[pos[0]][pos[1]] >= 2: #The player attacks an enemy
+            attackEnemy(board[pos[0]][pos[1]]-2) #Attack enemy, consequences and results shown in attackEnemy() function
+            pos = oldPos
+        drawPlayer()
+    
+        #Rick Perry's automated moves with respect to the center of his circle of radius 1.5 squares.
+        if len(enPos) > 0 and enPos[0].name == "Rick Perry":
+            cen = [enPos[0][0]+1, enPos[0][1]+1]
+            #Calculate difference in x distance and y distance to player
+            dx = cen[0] - pos[0]
+            dy = cen[1] - pos[1]
+            newX = cen[0]
+            newY = cen[1]
+            #Advance in the direction with greater difference
+            if math.fabs(dx) > math.fabs(dy):
+                newX = cen[0] - int(dx/math.fabs(dx))
+            elif math.fabs(dy) > math.fabs(dx):
+                newY = cen[1] - int(dy/math.fabs(dy))
+            elif randint(0,1) == 0:
+                newX = cen[0] - int(dx/math.fabs(dx))
+            else:
+                newY = cen[1] - int(dy/math.fabs(dy))
+            if newX-1 <= 0 or newX+1 >= 25 or newY-1 <= 0 or newY+1 >= 25:
+                newX = cen[0]
+                newY = cen[1]
+            elif math.fabs(newX-pos[0]) <= 1 and math.fabs(newY-pos[1]) <= 1:
+                newX = cen[0]
+                newY = cen[1]
+                attackPlayer(0)
+            #Replace 0's with 2 in board to identify enemy
+            for i in range(0,3):
+                for j in range(0,3):
+                    board[enPos[0][0]+i][enPos[0][1]+j] = 0
+                    board[newX-1+i][newY-1+j] = 2
+            enPos[0].updatePos((newX-1),(newY-1))
+            drawEnemy(enPos[0][0], enPos[0][1], 65)    
+        else:   #Do the same thing as above, but with only one square instead of 9
+            for i in range(0,len(enPos)):
+                dx = enPos[i][0] - pos[0]
+                dy = enPos[i][1] - pos[1]
+                newX = enPos[i][0]
+                newY = enPos[i][1]
+                if math.fabs(dx) > math.fabs(dy):
+                    newX = enPos[i][0] - int(dx/math.fabs(dx))
+                elif math.fabs(dy) > math.fabs(dx):
+                    newY = enPos[i][1] - int(dy/math.fabs(dy))
+                elif randint(0,1) == 0:
+                    newX = enPos[i][0] - int(dx/math.fabs(dx))
+                else:
+                    newY = enPos[i][1] - int(dy/math.fabs(dy))   
+                if math.fabs(board[newX][newY]) >= 2 or newX <= 0 or newX >= 24 or newY >= 24 or newY <= 0:
+                    newX = enPos[i][0]
+                    newY = enPos[i][1]
+                elif newX == pos[0] and newY == pos[1]:
+                    attackPlayer(i)
+                    newX = enPos[i][0]
+                    newY = enPos[i][1]
+                #If this square was originally a box, restore the box
+                if board[enPos[i][0]][enPos[i][1]] < 0:
+                    board[enPos[i][0]][enPos[i][1]] = -1
+                else:
+                    board[enPos[i][0]][enPos[i][1]] = 0
                 
-				if board[newX][newY] == 0:
-					board[newX][newY] = i+2 
-				else:
-					board[newX][newY] = -(i+2)  
-				enPos[i].updatePos(newX, newY)
-				drawEnemy(enPos[i][0], enPos[i][1], i)
-		updateStats()
-	if not game:	#if game is false, end the game
-		endGame()   
+                if board[newX][newY] == 0:
+                    board[newX][newY] = i+2 
+                else:
+                    board[newX][newY] = -(i+2)  
+                enPos[i].updatePos(newX, newY)
+                drawEnemy(enPos[i][0], enPos[i][1], i)
+        updateStats()
+    if not game:    #if game is false, end the game
+        endGame()   
     
 def addText(txt):
     '''Add the text given by the variable txt to the main output screen; takes one argument:
-		txt - Text to be outputted as a string'''
-    if c[2] == 480:	#Reset the canvas if it is full
+        txt - Text to be outputted as a string'''
+    if c[2] == 480: #Reset the canvas if it is full
         text.delete("all")
         c[2] = 0
     else:
@@ -393,40 +393,40 @@ def updateStats():
     anchor='nw',font=('Courier',10))
 
 def left():
-	'''On a left key or left button event, activate this function'''
-	global pos
-	if (pos[0] <= 1 and board[0][pos[1]] == 0) or (pos[1] == 0 or pos[1] == 24):	#Do not allow player to walk through walls
-		addText("You have now reached peak neoliberalism.")
-	else:
-		pos[0] -= 1
-	stuffHappens([-1,0])
+    '''On a left key or left button event, activate this function'''
+    global pos
+    if (pos[0] <= 1 and board[0][pos[1]] == 0) or (pos[1] == 0 or pos[1] == 24):    #Do not allow player to walk through walls
+        addText("You have now reached peak neoliberalism.")
+    else:
+        pos[0] -= 1
+    stuffHappens([-1,0])
     
 def right():
-	'''On a right key or right button event, activate this function'''
-	global pos
-	if (pos[0] >= 23 and board[24][pos[1]] == 0) or (pos[1] == 0 or pos[1] == 24):	#D not allow player to walk through walls
-		addText("Is this the right way?")
-	else:
-		pos[0] += 1
-	stuffHappens([1,0])
+    '''On a right key or right button event, activate this function'''
+    global pos
+    if (pos[0] >= 23 and board[24][pos[1]] == 0) or (pos[1] == 0 or pos[1] == 24):  #D not allow player to walk through walls
+        addText("Is this the right way?")
+    else:
+        pos[0] += 1
+    stuffHappens([1,0])
     
 def up():
-	'''On an up key or up button event, activate this function'''
-	global pos
-	if (pos[1] <= 1 and board[pos[0]][0] == 0) or (pos[0] == 0 or pos[0] == 24):	#Do not allow player to walk through walls
-		addText("Y'all are just so uppity!")
-	else:
-		pos[1] -= 1
-	stuffHappens([0,-1])
+    '''On an up key or up button event, activate this function'''
+    global pos
+    if (pos[1] <= 1 and board[pos[0]][0] == 0) or (pos[0] == 0 or pos[0] == 24):    #Do not allow player to walk through walls
+        addText("Y'all are just so uppity!")
+    else:
+        pos[1] -= 1
+    stuffHappens([0,-1])
     
 def down():
-	'''On a down key or down button event, activate this function'''
-	global pos
-	if (pos[1] >= 23 and board[pos[0]][24] == 0) or (pos[0] == 0 or pos[0] == 24):	#Do not allow player to walk through walls
-		addText("Dude, I LOVE walls!!!")
-	else:
-		pos[1] += 1
-	stuffHappens([0,1])
+    '''On a down key or down button event, activate this function'''
+    global pos
+    if (pos[1] >= 23 and board[pos[0]][24] == 0) or (pos[0] == 0 or pos[0] == 24):  #Do not allow player to walk through walls
+        addText("Dude, I LOVE walls!!!")
+    else:
+        pos[1] += 1
+    stuffHappens([0,1])
     
 #Shell functions for each button event to discard the event passed by <Key>
 def hi(key):
@@ -442,65 +442,71 @@ def hi4(key):
     right()
     
 def interact():
-	'''Interacting with boxes results in this function, which will give you various objects based on a random number'''
-	global board
-	if board[pos[0]][pos[1]] == -1:
-		q = randint(0,10)	#Generate random number
-		if q == 0:			#1/11 chance
-			pl.inv[2] += 1
-			addText("You gained a key. Door unlocked!")		#Needed to unlock door
-			updateStats()
-		elif q == 1:		#1/11 chance
-			pl.inv[3] += 1
-			addText("You have gained a lamp. Let there be light")	#Needed to make room light
-			updateStats()
-		elif q == 2 or q == 3:	#2/11 chance
-			pl.inv[1] += 1
-			addText("You got some C6H1206 (glucose). Sweet!")
-		elif q >=4 and q<=7:	#4/11 chance
-			r = randint(1,3)
-			pl.inv[0] += r
-			if r == 1:
-				addText("You have gained 1 health potion.")
-			else:
-				addText("You have gained " + str(r) + " health potions.")
-		else:				#3/11 chance
-			addText("This box has nothing, because we're mean")
-		board[pos[0]][pos[1]] = -65		#You can't open open boxes
-	elif board[pos[0]][pos[1]] == -65:
-		addText("Again? Seriously?")
-	else:	#You can't open nonexistent boxes
-		addText("Nothing to see here...")
-	updateStats()
+    '''Interacting with boxes results in this function, which will give you various objects based on a random number'''
+    global board
+    if board[pos[0]][pos[1]] == -1:
+        q = randint(0,10)   #Generate random number
+        if q == 0:          #1/11 chance
+            pl.inv[2] += 1
+            addText("You gained a key. Door unlocked!")     #Needed to unlock door
+            updateStats()
+        elif q == 1:        #1/11 chance
+            pl.inv[3] += 1
+            addText("You have gained a lamp. Let there be light")   #Needed to make room light
+            updateStats()
+        elif q == 2 or q == 3:  #2/11 chance
+            pl.inv[1] += 1
+            addText("You got some C6H1206 (glucose). Sweet!")
+            if pl.inv[1] > 5: #bag is overflowing with sugar
+                pl.inv[1] = 5
+                addText("You don't have enough space to carry so much sugar!")
+        elif q >=4 and q<=7:    #4/11 chance
+            r = randint(1,3)
+            pl.inv[0] += r
+            if r == 1:
+                addText("You have gained 1 health potion.")
+            else:
+                addText("You have gained " + str(r) + " health potions.")
+            if pl.inv[0] > 10: #bag is overflowing with potions
+                pl.inv[0] = 10
+                addText("You don't have enough space to carry so many potions!")
+        else:               #3/11 chance
+            addText("This box has nothing, because we're mean")
+        board[pos[0]][pos[1]] = -65     #You can't open open boxes
+    elif board[pos[0]][pos[1]] == -65:
+        addText("Again? Seriously?")
+    else:   #You can't open nonexistent boxes
+        addText("Nothing to see here...")
+    updateStats()
         
 def potion():
     '''Allows the user to drink a tacky red potion to regain health'''
-    if pl.inv[0] > 0:	#If player has potions in stock, allow use of one
+    if pl.inv[0] > 0:   #If player has potions in stock, allow use of one
         pl.inv[0] -= 1
         addText("An awfully tacky red potion. You drink it.")
         pl.hp = min(pl.hp+5,pl.maxhp)
         updateStats()
-    else:	#Otherwise, no soup for you.
+    else:   #Otherwise, no soup for you.
         addText("No soup for you!")
     updateStats()
 
 def sugar():
     '''Allow the player to eat sugar, giving a temporary energy boost'''
-    if pl.inv[1] < 0:	#Can't use it if you don't have it
+    if pl.inv[1] <= 0:  #Can't use it if you don't have it
         addText( "No more Skittles for you.")
         pl.inv[1] = 0
-    else:				#Increase the next attack
-	    pl.inv[1] -= 1
-	    addText("An oncoming sugar rush has increased your next attack!")
-	    pl.sugar +=1
-	    pl.knowledge = pl.knowledge*2
+    else:               #Increase the next attack
+        pl.inv[1] -= 1
+        addText("An oncoming sugar rush has increased your next attack!")
+        pl.sugar +=1
+        pl.knowledge = pl.knowledge*2
     updateStats()
 
 def backpack():
     '''Display the elements in the backpack (player's inventory)'''
-    statBar.delete("all")	#Delete all stats from stats menu
+    statBar.delete("all")   #Delete all stats from stats menu
     item = ""
-	#Display quantity of all items
+    #Display quantity of all items
     if pl.inv[2]>=1 or pl.inv[3]>=1:
         item += " Supercritical Items:\n"    
         if pl.inv[2] >= 1:
