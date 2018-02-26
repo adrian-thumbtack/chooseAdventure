@@ -292,8 +292,12 @@ def stuffHappens(jeff):
     if not game:    #Catch movement if game has ended
         addText("The game is over, nice try")
     else:
-        if c[0] == 1 and c[1] == 1 and pos == [12,0] and pl.inv[2] <= 0:    #If the player attempts to move through a locked door without a key, deny them
-            addText("That door is locked, dingus")
+        if c[0] == 1 and c[1] == 1 and pos == [12,0] and (pl.inv[2] <= 0 or False in pl.inv[4:]):
+            if pl.inv[2] <= 0:    #If the player attempts to move through a locked door without a key, deny them
+                addText("That door is locked, dingus")
+            elif False in pl.inv[4:]:
+                addText("The key clicks, but the door does not budge")
+                addText("Perhaps you should open more boxes")
             pos = oldPos 
         elif pos[0] <= 0:   #All cases for a player moving back through a door; generates new room and changes c based on which room the user enters
             if pos[1] == oldPos[1]:
