@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import tkinter as tk
+import Tkinter as tk
 from random import randint
 from Bestiary import *
 import math
@@ -254,7 +254,7 @@ def newRoom():
 def endGame():
     '''Displays green text on black background describing the end result, either "Game Over" or "You win!". This function only activates if the Boolean variable game has a value of false'''
     txt = None
-    if pl.hp == 0:          #If player is dead, game is over
+    if pl.hp <= 0:          #If player is dead, game is over
         txt = "Game Over!"
     else:                   #Otherwise, you win!!!
         txt = "You win!" 
@@ -295,7 +295,7 @@ def attackEnemy(num):
         del enPos[num]
         del en[num]
         
-    if len(enPos) == 0:
+    if len(enPos) < 5:
         rooms[c[0]][c[1]][1] += 1   #Increase enemy level the next time the room is entered
     
   
@@ -421,7 +421,7 @@ def stuffHappens(jeff):
                 enPos[i].updatePos(newX, newY)
                 drawEnemy(enPos[i][0], enPos[i][1], i)
 
-        if pl.inv[5]: pl.hp = min(pl.maxhp,pl.hp+1)
+        if pl.inv[5] and len(enPos) > 0: pl.hp = min(pl.maxhp,pl.hp+1)
         
         updateStats()
     if not game:    #if game is false, end the game
