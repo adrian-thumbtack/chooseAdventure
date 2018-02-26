@@ -316,7 +316,20 @@ def stuffHappens(jeff):
                 newRoom()
                 pos[1] = 0
         elif board[pos[0]][pos[1]] >= 2: #The player attacks an enemy
-            attackEnemy(board[pos[0]][pos[1]]-2) #Attack enemy, consequences and results shown in attackEnemy() function
+            if pl.inv[9] and randint(1,4) == 1: #if player has a seismograph, 25% chance of causing earthquake
+                addText("Earthquake!")
+                l = len(enPos)
+                for i in range(l):
+                    attackEnemy(l-i-1)
+            else:
+                if pl.inv[8]: #if player has a compass
+                    diff = [pos[0]-oldPos[0],pos[1]-oldPos[1]]
+                    around = [board[oldPos[0]+diff[1]][oldPos[1]-diff[0]],
+                              board[oldPos[0]-diff[0]][oldPos[1]-diff[1]],
+                              board[oldPos[0]-diff[1]][oldPos[1]+diff[0]]]
+                    for i in around: #check every tile around player
+                        if i > 0: attackEnemy(i-2) #attack if tile has an enemy
+                attackEnemy(board[pos[0]][pos[1]]-2) #Attack enemy, consequences and results shown in attackEnemy() function
             pos = oldPos
         drawPlayer()
     
@@ -384,6 +397,9 @@ def stuffHappens(jeff):
                     board[newX][newY] = -(i+2)  
                 enPos[i].updatePos(newX, newY)
                 drawEnemy(enPos[i][0], enPos[i][1], i)
+
+        if pl.inv[5]: pl.hp = min(pl.maxhp,pl.hp+1)
+        
         updateStats()
     if not game:    #if game is false, end the game
         endGame()   
@@ -493,6 +509,7 @@ def interact():
                 addText("You got a textbook!")
                 addText("Knowledge has permanently increased by 10")
                 pl.inv[4] = True
+                pl.knowledge += 10
             if c[0] == 2 and c[1] == 0 and not pl.inv[5]:
                 addText("You got a chloroplast!")
                 addText("HP will regenerate naturally")
@@ -505,6 +522,7 @@ def interact():
                 addText("You got a mirror!")
                 addText("Immune has permanently increased by 6")
                 pl.inv[7] = True
+                pl.immune += 6
             if c[0] == 1 and c[1] == 0 and not pl.inv[8]:
                 addText("You got a compass!")
                 addText("Attacks will do damage in all directions")

@@ -76,7 +76,7 @@ class Player:
         self.l = 1
         self.knowledge = 10
         self.immune = 5
-        #potions, sugar, key, lamp, textbook, chloroplast, distiller, mirror, compass, seismograph, solar flare
+        #potions, sugar, key, lamp, textbook, chloroplast, distiller, mirror, compass, seismograph, star chart
         self.inv = [0,0,0,0,False,False,False,False,False,False,False]
         self.xp = 0
         self.sugar = 0
