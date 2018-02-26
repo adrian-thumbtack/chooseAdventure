@@ -66,6 +66,7 @@ class RickPerry(Enemy):
     attack = 'fracked'
     def __init__(self):
         Enemy.__init__(self,10)
+        self.knowledge *= 5
 
 class Player:
     def __init__(self):
