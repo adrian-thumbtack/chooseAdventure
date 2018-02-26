@@ -1,4 +1,4 @@
-import Tkinter as tk
+import tkinter as tk
 from random import randint
 from Bestiary import *
 import math
@@ -514,28 +514,28 @@ def interact():
                 addText("Knowledge has permanently increased by 10")
                 pl.inv[4] = True
                 pl.knowledge += 10
-            if c[0] == 2 and c[1] == 0 and not pl.inv[5]:
+            elif c[0] == 2 and c[1] == 0 and not pl.inv[5]:
                 addText("You got a chloroplast!")
                 addText("HP will regenerate naturally")
                 pl.inv[5] = True
-            if c[0] == 2 and c[1] == 1 and not pl.inv[6]:
+            elif c[0] == 2 and c[1] == 1 and not pl.inv[6]:
                 addText("You got a distiller!")
                 addText("Potions now heal double")
                 pl.inv[6] = True
-            if c[0] == 2 and c[1] == 2 and not pl.inv[7]:
+            elif c[0] == 2 and c[1] == 2 and not pl.inv[7]:
                 addText("You got a mirror!")
                 addText("Immune has permanently increased by 6")
                 pl.inv[7] = True
                 pl.immune += 6
-            if c[0] == 1 and c[1] == 0 and not pl.inv[8]:
+            elif c[0] == 1 and c[1] == 0 and not pl.inv[8]:
                 addText("You got a compass!")
                 addText("Attacks will do damage in all directions")
                 pl.inv[8] = True
-            if c[0] == 1 and c[1] == 1 and not pl.inv[9]:
+            elif c[0] == 1 and c[1] == 1 and not pl.inv[9]:
                 addText("You got a seismograph!")
                 addText("Attacks have a chance to deal damage to all enemies in the room")
                 pl.inv[9] = True
-            if c[0] == 1 and c[1] == 2 and not pl.inv[10]:
+            elif c[0] == 1 and c[1] == 2 and not pl.inv[10]:
                 addText("You got a star chart!")
                 addText("Room levels are now revealed")
                 pl.inv[10] = True
