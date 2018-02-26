@@ -591,18 +591,32 @@ def backpack():
     statBar.delete("all")   #Delete all stats from stats menu
     item = ""
     #Display quantity of all items
-    if pl.inv[2]>=1 or pl.inv[3]>=1:
+    if pl.inv[2]>=1 or pl.inv[3]>=1 or pl.inv[4]>=1 or pl.inv[5]>=1 or pl.inv[6] or pl.inv[7]>=1 or pl.inv[8]>=1 or pl.inv[9]>=1 or pl.inv[10]>=1:
         item += " Supercritical Items:\n"    
         if pl.inv[2] >= 1:
-            item += " Mysterious Key\n"
+            item += " Mysterious Key: Seems to unlock a door.\n"
         if pl.inv[3] >= 1:
-            item += " Oil Lamp\n"
+            item += " Oil Lamp: Lights up dark rooms.\n"
+        if pl.inv[4] >= 1:
+            item += " Textbook: Flat knowledge boost.\n"
+        if pl.inv[5] >= 1:
+            item += " Chloroplast: Health regens over time.\n"
+        if pl.inv[6] >= 1:
+            item += " Distiller: % boost for health potions.\n"
+        if pl.inv[7] >= 1:
+            item += " Mirror: Flat immunity boost.\n"
+        if pl.inv[8] >= 1:
+            item += " Compass: Attacks do AOE damage.\n"
+        if pl.inv[9] >= 1:
+            item += " Seismograph: Chance to damage all enemies.\n"
+        if pl.inv[10] >= 1:
+            item += " Star Chart: Displays level of room.\n"
     if pl.inv[0] >= 1 or pl.inv[1]>=1:
         item += "\n Consumables:\n"
         if pl.inv[0] >= 1:
-            item += " Health Potion (x" + str(pl.inv[0]) + ")\n"
+            item += " Health Potion (x" + str(pl.inv[0]) + "): Heals flat HP.\n"
         if pl.inv[1] >= 1:
-            item += " Sugar (x" + str(pl.inv[1]) + ")\n"
+            item += " Sugar (x" + str(pl.inv[1]) + "): Doubles attack for 1 turn.\n"
     statBar.create_text(0,0,text=
     " Backpack \n\n" + str(item),
     anchor='nw',font=('Courier',10))
