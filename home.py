@@ -417,6 +417,20 @@ def addText(txt):
     else:
         c[2] += 20
     text.create_text(2,c[2],text=txt,anchor='nw',font=('Courier',10))
+  
+addText('Hello there! Welcome to the world of SciBowl!\n')
+addText('My name is Tracey! People call me the SciBowl Prof!\n')
+addText('This world is inhabited by creatures called Scibowlers!\n')
+addText('For some people, SciBowlers are students. Others use \n')
+addText('them for fights. Myself...I study SciBowl as a profession.\n')
+addText('Now, what is your name...?\n')
+addText('')
+addText('')
+addText('')
+addText('Ha! You thought you had a choice?\n')
+addText('Your name is Linnaeus. Linnaeus! Your very own SciBowl \n')
+addText('legend is about to unfold! A world of dreams and \n')
+addText('adventures with SciBowl awaits!"')
 
 def updateStats():
     '''Update the stats canvas to show the most recent stats'''
