@@ -1,7 +1,7 @@
-class Enemy:
+class Enemy: #generic enemy class
     name = 'Scientist'
     attack = 'scientificated'
-    def __init__(self,l):
+    def __init__(self,l): #initialize enemy with appropriate stats and level l
         self.hp = 5*l+5
         self.knowledge = 15*l
         self.immune = 1.5*l-0.5
@@ -11,16 +11,16 @@ class Enemy:
         self.xPos = 0
         self.yPos = 0
         
-    def attacked(self,other_attack,other_power):
+    def attacked(self,other_attack,other_power): #enemy is attacked
         damage = int(other_power*other_attack/self.immune)
         self.hp -= damage
         return damage
     
-    def updatePos(self,x,y):
+    def updatePos(self,x,y): #change the position of the enemy
         self.xPos = x
         self.yPos = y
     
-    def __getitem__(self,i):
+    def __getitem__(self,i): #for backwards compatibility
         if i == 0: return self.xPos
         elif i == 1: return self.yPos
 
@@ -35,7 +35,6 @@ class Chemist(Enemy):
     attack = 'chemistrificated'
     def __init__(self,l):
         Enemy.__init__(self,l)
-
 
 class Biologist(Enemy):
     name = 'Biologist'
@@ -68,8 +67,8 @@ class RickPerry(Enemy):
         Enemy.__init__(self,10)
         self.knowledge *= 5
 
-class Player:
-    def __init__(self):
+class Player: #player class
+    def __init__(self): #A bunch of variables
         self.name = ''
         self.level = 1
         self.hp = 10
@@ -82,15 +81,15 @@ class Player:
         self.xp = 0
         self.sugar = 0
     
-    def attacked(self,other_attack):
+    def attacked(self,other_attack): #player is attacked
         damage = other_attack/self.immune
         self.hp -= int(damage)
         return damage
     
-    def giveXP(self,xp):
+    def giveXP(self,xp): #give xp to player
         self.xp += xp
-        if self.xp >= 10*self.level**2:
-            self.xp -= 10*self.level**2
+        if self.xp >= 10*self.level**2: #check for level up
+            self.xp -= 10*self.level**2 #reduce xp, update stats
             self.level += 1
             self.maxhp += 10
             self.hp += 10
