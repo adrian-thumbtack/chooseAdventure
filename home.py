@@ -214,6 +214,24 @@ def newRoom():
         box = [canvas.create_rectangle(q[0]*20, q[1]*20, (q[0]+1)*20, (q[1]+1)*20, fill="brown"),q[0],q[1]]
         board[q[0]][q[1]] = -1
 
+    if pl.inv[10]:
+        ret = "Entering the level " + str(rooms[c[0]][c[1]][1]) + " "
+        if c[0] == 1 and c[1] == 0:
+            ret += "numbers"
+        if c[0] == 1 and c[1] == 1:
+            ret += "rocks"
+        if c[0] == 1 and c[1] == 2:
+            ret += "SPAAAAAAAAACE"
+        if c[0] == 2 and c[1] == 0:
+            ret += "plants"
+        if c[0] == 2 and c[1] == 1:
+            ret += "chemiscry"
+        if c[0] == 2 and c[1] == 2:
+            ret += "feejyx"
+        if c[0] == 3 and c[1] == 1:
+            ret += "'General Science'"
+        addText(ret + " room")
+
 def endGame():
     '''Displays green text on black background describing the end result, either "Game Over" or "You win!". This function only activates if the Boolean variable game has a value of false'''
     txt = None
@@ -471,7 +489,36 @@ def interact():
                 pl.inv[0] = 10
                 addText("You don't have enough space to carry so many potions!")
         else:               #3/11 chance
-            addText("This box has nothing, because we're mean")
+            if c[0] == 3 and c[1] == 1 and not pl.inv[4]:
+                addText("You got a textbook!")
+                addText("Knowledge has permanently increased by 10")
+                pl.inv[4] = True
+            if c[0] == 2 and c[1] == 0 and not pl.inv[5]:
+                addText("You got a chloroplast!")
+                addText("HP will regenerate naturally")
+                pl.inv[5] = True
+            if c[0] == 2 and c[1] == 1 and not pl.inv[6]:
+                addText("You got a distiller!")
+                addText("Potions now heal double")
+                pl.inv[6] = True
+            if c[0] == 2 and c[1] == 2 and not pl.inv[7]:
+                addText("You got a mirror!")
+                addText("Immune has permanently increased by 6")
+                pl.inv[7] = True
+            if c[0] == 1 and c[1] == 0 and not pl.inv[8]:
+                addText("You got a compass!")
+                addText("Attacks will do damage in all directions")
+                pl.inv[8] = True
+            if c[0] == 1 and c[1] == 1 and not pl.inv[9]:
+                addText("You got a seismograph!")
+                addText("Attacks have a chance to deal damage to all enemies in the room")
+                pl.inv[9] = True
+            if c[0] == 1 and c[1] == 2 and not pl.inv[10]:
+                addText("You got a star chart!")
+                addText("Room levels are now revealed")
+                pl.inv[10] = True
+            else:
+                addText("This box has nothing, because we're mean")
         board[pos[0]][pos[1]] = -65     #You can't open open boxes
     elif board[pos[0]][pos[1]] == -65:
         addText("Again? Seriously?")
@@ -484,7 +531,8 @@ def potion():
     if pl.inv[0] > 0:   #If player has potions in stock, allow use of one
         pl.inv[0] -= 1
         addText("An awfully tacky red potion. You drink it.")
-        pl.hp = min(pl.hp+5,pl.maxhp)
+        if pl.inv[6]: pl.hp = min(pl.hp+20,pl.maxhp)
+        else: pl.hp = min(pl.hp+10,pl.maxhp)
         updateStats()
     else:   #Otherwise, no soup for you.
         addText("No soup for you!")
