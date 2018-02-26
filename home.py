@@ -338,7 +338,7 @@ def stuffHappens(jeff):
                 c[0] += 1
                 newRoom()
                 pos[1] = 0
-        elif board[pos[0]][pos[1]] >= 2: #The player attacks an enemy
+        elif board[pos[0]][pos[1]] >= 2 or (board[pos[0]][pos[1]] <= -2 and board[pos[0]][pos[1]] >= -6): #The player attacks an enemy
             if pl.inv[9] and randint(1,4) == 1: #if player has a seismograph, 25% chance of causing earthquake
                 addText("Earthquake!")
                 l = len(enPos)
@@ -352,7 +352,7 @@ def stuffHappens(jeff):
                           board[oldPos[0]-diff[1]][oldPos[1]+diff[0]]]
                 for i in sorted(around)[::-1]: #check every tile around player
                     if i > 0: attackEnemy(i-2) #attack if tile has an enemy
-            else: attackEnemy(board[pos[0]][pos[1]]-2) #Attack enemy, consequences and results shown in attackEnemy() function
+            else: attackEnemy(abs(board[pos[0]][pos[1]])-2) #Attack enemy, consequences and results shown in attackEnemy() function
             pos = oldPos
         drawPlayer()
     
@@ -365,18 +365,18 @@ def stuffHappens(jeff):
             newX = cen[0]
             newY = cen[1]
             #Advance in the direction with greater difference
-            if math.fabs(dx) > math.fabs(dy):
-                newX = cen[0] - int(dx/math.fabs(dx))
-            elif math.fabs(dy) > math.fabs(dx):
-                newY = cen[1] - int(dy/math.fabs(dy))
+            if abs(dx) > abs(dy):
+                newX = cen[0] - int(dx/abs(dx))
+            elif abs(dy) > abs(dx):
+                newY = cen[1] - int(dy/abs(dy))
             elif randint(0,1) == 0:
-                newX = cen[0] - int(dx/math.fabs(dx))
+                newX = cen[0] - int(dx/abs(dx))
             else:
-                newY = cen[1] - int(dy/math.fabs(dy))
+                newY = cen[1] - int(dy/abs(dy))
             if newX-1 <= 0 or newX+1 >= 25 or newY-1 <= 0 or newY+1 >= 25:
                 newX = cen[0]
                 newY = cen[1]
-            elif math.fabs(newX-pos[0]) <= 1 and math.fabs(newY-pos[1]) <= 1:
+            elif abs(newX-pos[0]) <= 1 and abs(newY-pos[1]) <= 1:
                 newX = cen[0]
                 newY = cen[1]
                 attackPlayer(0)
@@ -393,15 +393,15 @@ def stuffHappens(jeff):
                 dy = enPos[i][1] - pos[1]
                 newX = enPos[i][0]
                 newY = enPos[i][1]
-                if math.fabs(dx) > math.fabs(dy):
-                    newX = enPos[i][0] - int(dx/math.fabs(dx))
-                elif math.fabs(dy) > math.fabs(dx):
-                    newY = enPos[i][1] - int(dy/math.fabs(dy))
+                if abs(dx) > abs(dy):
+                    newX = enPos[i][0] - int(dx/abs(dx))
+                elif abs(dy) > abs(dx):
+                    newY = enPos[i][1] - int(dy/abs(dy))
                 elif randint(0,1) == 0:
-                    newX = enPos[i][0] - int(dx/math.fabs(dx))
+                    newX = enPos[i][0] - int(dx/abs(dx))
                 else:
-                    newY = enPos[i][1] - int(dy/math.fabs(dy))   
-                if math.fabs(board[newX][newY]) >= 2 or newX <= 0 or newX >= 24 or newY >= 24 or newY <= 0:
+                    newY = enPos[i][1] - int(dy/abs(dy))   
+                if abs(board[newX][newY]) >= 2 or newX <= 0 or newX >= 24 or newY >= 24 or newY <= 0:
                     newX = enPos[i][0]
                     newY = enPos[i][1]
                 elif newX == pos[0] and newY == pos[1]:
