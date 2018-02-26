@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import tkinter as tk
 from random import randint
 from Bestiary import *
@@ -231,7 +232,25 @@ def newRoom():
         if c[0] == 3 and c[1] == 1:
             ret += "'General Science'"
         addText(ret + " room")
-
+    else:
+        if c[0] == 1 and c[1] == 0:
+            addText("The math room. Dr. Eng peers at you from his corner.")
+        if c[0] == 1 and c[1] == 1 and pl.inv[3]==0:
+            addText("It’s pitch black. This is the Geologist cave.")
+        if c[0] == 1 and c[1] == 1 and pl.inv[3]==1:
+            addText("You enter the geology room. Who studies rocks, anyways?")
+        if c[0] == 1 and c[1] == 2:
+            addText("We don’t even have a astronomy class. Whatever. SPAACE.")
+        if c[0] == 2 and c[1] == 0:
+            addText("You enter the bio room. Wisconsin Fast Plants are everywhere.")
+        if c[0] == 2 and c[1] == 1:
+            addText("You enter the chem room. There's a pile of failed-postlabs.")
+        if c[0] == 2 and c[1] == 2:
+            addText("You enter the physics room. Whiteboards are everywhere.")
+        if c[0] == 3 and c[1] == 1:
+            addText("Back to the MPR. Lots of Scibowlers are here.")
+        if c[0] == 0 and c[1] == 1:  
+            addText("Scibowl Nats. Only Rick Perry (and blurts) can stop you now.")
 def endGame():
     '''Displays green text on black background describing the end result, either "Game Over" or "You win!". This function only activates if the Boolean variable game has a value of false'''
     txt = None
