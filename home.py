@@ -400,11 +400,16 @@ def stuffHappens(jeff):
                 elif randint(0,1) == 0:
                     newX = enPos[i][0] - int(dx/abs(dx))
                 else:
-                    newY = enPos[i][1] - int(dy/abs(dy))   
-                if abs(board[newX][newY]) >= 2 or newX <= 0 or newX >= 24 or newY >= 24 or newY <= 0:
+                    newY = enPos[i][1] - int(dy/abs(dy)) 
+                if newX <= 0 or newX >= 24 or newY >= 24 or newY <= 0:
+                    if pos == [newX,newY]:
+                        attackPlayer(i)
+                    newX = enPos[i][0]
+                    newY = enPos[i][1]   
+                elif abs(board[newX][newY]) >= 2:
                     newX = enPos[i][0]
                     newY = enPos[i][1]
-                elif newX == pos[0] and newY == pos[1]:
+                elif pos == [newX,newY]:
                     attackPlayer(i)
                     newX = enPos[i][0]
                     newY = enPos[i][1]
