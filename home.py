@@ -207,7 +207,7 @@ def newRoom():
     enemies()   #Generates new enemies
     if c[0] == 1 and c[1] == 1 and pl.inv[3] <= 0:  #If entering dark room without light source, it must be dark
         cover = canvas.create_rectangle(0,0,500,500, fill="black")  #Cover makes the room dark by drawing a black square
-    elif c[:2] not in [[0,1],[1,1]]:                #Create a box if not two certain rooms
+    elif c[:2] != [0,1]:                #Create a box if not in Rick Perry's room
         q = [randint(1,23), randint(1,23)]
         while q == pos or board[q[0]][q[1]] >= 1:   #Box Position should not be player pos or enemy pos
             q = [randint(1,23), randint(1,23)]
