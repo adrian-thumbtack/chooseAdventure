@@ -638,7 +638,7 @@ def backpack():
             item += " Sugar (x" + str(pl.inv[1]) + "): Doubles attack for 1 turn.\n"
     statBar.create_text(0,0,text=
     " Backpack \n\n" + str(item),
-    anchor='nw',font=('Courier',10))
+    anchor='nw',font=('Courier',8))
 
 #Add events to each key to allow use of keyboard
 root.bind("<Up>", hi)
