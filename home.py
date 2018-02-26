@@ -295,7 +295,7 @@ def attackEnemy(num):
         del enPos[num]
         del en[num]
         
-    if len(enPos) == 0:
+    if len(enPos) < 5:
         rooms[c[0]][c[1]][1] += 1   #Increase enemy level the next time the room is entered
     
   
