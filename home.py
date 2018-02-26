@@ -325,15 +325,15 @@ def stuffHappens(jeff):
                 l = len(enPos)
                 for i in range(l):
                     attackEnemy(l-i-1)
-            else:
-                if pl.inv[8]: #if player has a compass
-                    diff = [pos[0]-oldPos[0],pos[1]-oldPos[1]]
-                    around = [board[oldPos[0]+diff[1]][oldPos[1]-diff[0]],
-                              board[oldPos[0]-diff[0]][oldPos[1]-diff[1]],
-                              board[oldPos[0]-diff[1]][oldPos[1]+diff[0]]]
-                    for i in around: #check every tile around player
-                        if i > 0: attackEnemy(i-2) #attack if tile has an enemy
-                attackEnemy(board[pos[0]][pos[1]]-2) #Attack enemy, consequences and results shown in attackEnemy() function
+            elif pl.inv[8]: #if player has a compass
+                diff = [pos[0]-oldPos[0],pos[1]-oldPos[1]]
+                around = [board[oldPos[0]+diff[0]][oldPos[1]+diff[1]],
+                          board[oldPos[0]+diff[1]][oldPos[1]-diff[0]],
+                          board[oldPos[0]-diff[0]][oldPos[1]-diff[1]],
+                          board[oldPos[0]-diff[1]][oldPos[1]+diff[0]]]
+                for i in sorted(around)[::-1]: #check every tile around player
+                    if i > 0: attackEnemy(i-2) #attack if tile has an enemy
+            else: attackEnemy(board[pos[0]][pos[1]]-2) #Attack enemy, consequences and results shown in attackEnemy() function
             pos = oldPos
         drawPlayer()
     
