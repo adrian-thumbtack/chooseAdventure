@@ -290,7 +290,7 @@ def attackEnemy(num):
         addText(enPos[num].name+" died!")
         canvas.delete(en[num])
 		if board[enPos[num][0]][enPos[num][1]] < 0:
-			board[enPos[num][0]][enPos[num[1]] = -1
+			board[enPos[num][0]][enPos[num][1]] = -1
 		else:
 			board[enPos[num][0]][enPos[num][1]] = 0
         if enPos[num].name == "Rick Perry": #If the killed enemy was Rick Perry, the endGame() function is triggered
