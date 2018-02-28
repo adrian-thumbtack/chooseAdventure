@@ -16,6 +16,7 @@ statBar.grid(row=1, column=1)
 pos = [randint(1,23), randint(1,23)]    #Generate random start position
 player = canvas.create_oval(20*pos[0], 20*pos[1], 20*(pos[0]+1), 20*(pos[1]+1), fill="green")
 board = []
+hasKilled = False
 
 #Set position of doors in each room
 rooms = [[[-1], [[False,False,True,False],1], [-1]],[[[False,False,True,True],1], [[True,True,True,True],1], [[False,True,True,False],1]],[[[True,False,False,True],1], [[True,True,True,True],1], [[True,True,False,False],1]],[[-1],[[True,False,False,False],1],[-1]]]
@@ -157,6 +158,9 @@ def newRoom():
     global cover
     global box
     global board
+    global hasKilled
+    
+    hasKilled = False
     
     #If exiting a dark room, remove the darkness; let there be light!
     if cover != None:
@@ -278,6 +282,7 @@ def attackEnemy(num):
     '''Player attacks an enemy given by enPos[num] and deals damage to enemy and gains experience'''
     global game
     global board
+    global hasKilled
     addText("Dealt "+str(enPos[num].attacked(pl.knowledge,1))+" damage to "+enPos[num].name)    #Display damage dealt to enemy  
     if pl.sugar > 0:    #Player loses sugar if player had sugar
         addText("You feel a little woozy...")
@@ -298,8 +303,9 @@ def attackEnemy(num):
         del enPos[num]
         del en[num]
         
-    if len(enPos) < 5:
+    if not hasKilled:
         rooms[c[0]][c[1]][1] += 1   #Increase enemy level the next time the room is entered
+        hasKilled = True
     
   
 def stuffHappens(jeff):
